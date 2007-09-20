@@ -83,12 +83,13 @@ function usage {
     echo "	Lists all possible values for <column> where"   		1>&2
     echo "	<column> is a fieldname."					1>&2
     echo "	Valid field names: 'board', 'cpu', 'eldkcc'"			1>&2
+    echo "	(can be abbreviated as 'b', 'c', 'e')"				1>&2
     echo ""									1>&2
     echo "	Examples:"							1>&2
-    echo "	eldk-map cpu board ppc440epx  - show all boards using 440EPx"	1>&2
-    echo "	eldk-map eldkcc board ppc_8xx - show all boards using ppc_8xx-" 1>&2
+    echo "	eldk-map c b ppc440epx  - show all boards using 440EPx"		1>&2
+    echo "	eldk-map e b ppc_8xx    - show all boards using ppc_8xx-"	1>&2
     echo "	  as CROSS_COMPILE."						1>&2
-    echo "	eldk-map cpu                  - show all known CPUs"		1>&2
+    echo "	eldk-map c                  - show all known CPUs"		1>&2
     exit 1
 }
 
@@ -150,7 +151,6 @@ function eldkcc_to_cpu {
 	if [ "$1" = "`toupper $ELDKCC`" ]
 	then
 	    echo $CPU
-	    break
 	fi
     done <<<"$CPU_TO_ELDKCC"
 }
@@ -166,41 +166,32 @@ function enum_cpu_eldkcc {
 if [ $# -eq 1 ]
 then
     # Lookup all values
-    FIELD=$(toupper $1)
-    if [ "$FIELD" = "BOARD" ]
-    then
-	enum_board_cpu $FIELD | sort | uniq
-    elif [ "$FIELD" = "CPU" -o "$FIELD" = "ELDKCC" ]
-    then
-	enum_cpu_eldkcc $FIELD | sort | uniq
-    else
-	echo "$0: unknown column $1" 1>&2
-	exit 1
-    fi
+    COLUMN=$(tolower $1)
+    case ${COLUMN:0:1} in
+	b)      enum_board_cpu BOARD | sort | uniq ;;
+	c)	enum_cpu_eldkcc CPU | sort | uniq ;;
+	e)      enum_cpu_eldkcc ELDKCC | sort | uniq ;;
+	*)	echo "$0: unknown column $1" 1>&2 ; exit 1 ;;
+    esac
 elif [ $# -eq 3 ]
 then
     # Map a $KEY through a table
     FROM=$(tolower $1)
     TO=$(tolower $2)
     KEY=$(toupper $3)
-    
-    if [ "$FROM" = "board" -a "$TO" = "cpu" ]; then
-	board_to_cpu $KEY
-    elif [ "$FROM" = "cpu" -a "$TO" = "eldkcc" ]; then
-	cpu_to_eldkcc $KEY
-    elif [ "$FROM" = "cpu" -a "$TO" = "board" ]; then
-	cpu_to_board $KEY
-    elif [ "$FROM" = "eldkcc" -a "$TO" = "cpu" ]; then
-	eldkcc_to_cpu $KEY
-    elif [ "$FROM" = "eldkcc" -a "$TO" = "board" ]; then
-	for CPU in `eldkcc_to_cpu $KEY`
-	do
+
+    case "${FROM:0:1},${TO:0:1}" in
+	b,c)	board_to_cpu $KEY ;;
+	c,e) 	cpu_to_eldkcc $KEY ;;
+	c,b)	cpu_to_board $KEY ;;
+	e,c)	eldkcc_to_cpu $KEY ;;
+	e,b)
+	for CPU in `eldkcc_to_cpu $KEY` ; do
 	    cpu_to_board $(toupper $CPU)
-	done
-    else
-	echo "$0: unknown lookup operation $FROM -> $TO" 1>&2
-	exit 1
-    fi
+	done ;;
+	*)  echo "$0: unknown lookup operation $FROM -> $TO" 1>&2
+	    exit 1 ;;
+    esac
 else
     usage
 fi
