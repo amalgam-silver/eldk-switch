@@ -54,6 +54,7 @@ fi
 CPU=`eldk-map board cpu $1`
 if [ -n "$CPU" ]
 then
+    echo "echo \"[ $1 is using $CPU ]\";"
     ELDKCC=`eldk-map cpu eldkcc $CPU`
 else
     ELDKCC=`eldk-map cpu eldkcc $1`
@@ -63,7 +64,7 @@ else
 	then
 	    ELDKCC=$1
 	else
-	    echo "$0: don't know what $1 might be, giving up."  1>&2
+	    echo "`basename $0`: don't know what $1 might be, giving up."  1>&2
 	    exit 1
 	fi
     fi
