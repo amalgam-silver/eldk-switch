@@ -1,0 +1,190 @@
+#!/bin/bash
+
+BOARD_TO_CPU=`sed -e 's/#.*//' -e '/^$/d' <<EOF
+# AMCC Eval boards
+acadia		PPC405EZ
+bamboo		PPC440EP
+bubinga		PPC405EP
+ebony		PPC440GP
+katmai		PPC440SPe
+katmai2		PPC440SPe
+luan		PPC440SP
+ocotea		PPC440GX
+rainier		PPC440GRx
+sequoia		PPC440EPx
+sycamore	PPC405GPr
+taihu		PPC405EP
+taishan		PPC440GX
+walnut		PPC405GP
+whirlwind	PPC440SPe
+yellowstone	PPC440GR
+yosemite	PPC440EP
+yucca		PPC440SPe
+yucca_a		PPC440SPe
+
+# Freescale
+lite5200b	MPC5200
+mpc5121		MPC5121e
+
+# MicroSys
+pm520		MPC5200
+pm854		MPC8540
+
+# PA-Semi
+electra		PA6T-1682M
+
+# TQ-Systems
+tqm5200		MPC5200
+tqm8540		MPC8540
+tqm8560		MPC8560
+EOF`
+
+CPU_TO_ELDKCC=`sed -e 's/#.*//' -e '/^$/d' <<EOF
+# AMCC
+PPC405EP	ppc_4xx
+PPC405EZ	ppc_4xx
+PPC405GPr	ppc_4xx
+PPC440EP	ppc_4xxFP
+PPC440EPx	ppc_4xxFP
+PPC440GP	ppc_4xx
+PPC440GR	ppc_4xx
+PPC440GRx	ppc_4xx
+PPC440GX	ppc_4xx
+PPC440SP	ppc_4xx
+PPC440SPe	ppc_4xx
+
+# Atmel
+AT91RM9200	arm
+
+# Freescale
+MPC5200		ppc_6xx
+MPC5121e        ppc_83xx
+MPC8540		ppc_85xx
+MPC8560		ppc_85xx
+
+# Infineon
+INCAIP		mips_4KCle
+
+# PA-Semi
+PA6T-1682M	pa6t
+EOF`
+
+function usage {
+    echo "usage: `basename $0` <from> <to> <key>"		1>&2
+    echo "	Looks up <key> in the table { <from>, <to> }"	1>&2 
+    echo "	where <from> and <to> are fieldnames."		1>&2
+    echo "       `basename $0` <column>"			1>&2
+    echo "	Lists all possible values for <column> where"   1>&2
+    echo "	<column> is a fieldname."			1>&2
+    echo "	Valid field names: 'board', 'cpu', 'eldkcc'"	1>&2
+    exit 1
+}
+
+function toupper {
+    echo $1 | tr 'a-z' 'A-Z'
+}
+
+function tolower {
+    echo $1 | tr 'A-Z' 'a-z'
+}
+
+# Map a board to its cpu
+function board_to_cpu {
+    while read BOARD CPU
+    do
+	if [ "$1" = "`toupper $BOARD`" ]
+	then
+	    echo $CPU
+	    break
+	fi
+    done <<<"$BOARD_TO_CPU"
+}
+
+# Map a cpu to all boards using it
+function cpu_to_board {
+    while read BOARD CPU
+    do
+	if [ "$1" = "`toupper $CPU`" ]
+	then
+	    echo $BOARD
+	fi
+    done <<<"$BOARD_TO_CPU"
+}
+
+# Enumerate a column over the whole table
+function enum_board_cpu {
+    while read BOARD CPU
+    do
+	eval "echo \$$1"
+    done <<<"$BOARD_TO_CPU"
+}
+
+# Map a CPU to its ELDK architecture
+function cpu_to_eldkcc {
+    while read CPU ELDKCC
+    do
+	if [ "$1" = "`toupper $CPU`" ]
+	then
+	    echo $ELDKCC
+	    break
+	fi
+    done <<<"$CPU_TO_ELDKCC"
+}
+
+# Map a CPU to its ELDK architecture
+function eldkcc_to_cpu {
+    while read CPU ELDKCC
+    do
+	if [ "$1" = "`toupper $ELDKCC`" ]
+	then
+	    echo $CPU
+	    break
+	fi
+    done <<<"$CPU_TO_ELDKCC"
+}
+
+# Enumerate a column over the whole table
+function enum_cpu_eldkcc {
+    while read CPU ELDKCC
+    do
+	eval "echo \$$1"
+    done <<<"$CPU_TO_ELDKCC" 
+}
+
+if [ $# -eq 1 ]
+then
+    # Lookup all values
+    FIELD=$(toupper $1)
+    if [ "$FIELD" = "BOARD" ]
+    then
+	enum_board_cpu $FIELD | sort | uniq
+    elif [ "$FIELD" = "CPU" -o "$FIELD" = "ELDKCC" ]
+    then
+	enum_cpu_eldkcc $FIELD | sort | uniq
+    else
+	echo "$0: unknown column $1" 1>&2
+	exit 1
+    fi
+elif [ $# -eq 3 ]
+then
+    # Map a $KEY through a table
+    FROM=$(tolower $1)
+    TO=$(tolower $2)
+    KEY=$(toupper $3)
+    
+    if [ "$FROM" = "board" -a "$TO" = "cpu" ]; then
+	board_to_cpu $KEY
+    elif [ "$FROM" = "cpu" -a "$TO" = "eldkcc" ]; then
+	cpu_to_eldkcc $KEY
+    elif [ "$FROM" = "cpu" -a "$TO" = "board" ]; then
+	cpu_to_board $KEY
+    elif [ "$FROM" = "eldkcc" -a "$TO" = "cpu" ]; then
+	eldkcc_to_cpu $KEY
+    else
+	echo "$0: unknown lookup operation $FROM -> $TO" 1>&2
+	exit 1
+    fi
+else
+    usage
+fi
+
