@@ -34,6 +34,9 @@ pm854		MPC8540
 electra		PA6T-1682M
 
 # TQ-Systems
+tqm8xxl		MPC823
+tqm860		MPC860
+tqm885d		MPC885
 tqm5200		MPC5200
 tqm8540		MPC8540
 tqm8560		MPC8560
@@ -57,6 +60,9 @@ PPC440SPe	ppc_4xx
 AT91RM9200	arm
 
 # Freescale
+MPC823		ppc_8xx
+MPC860		ppc_8xx
+MPC885		ppc_8xx
 MPC5200		ppc_6xx
 MPC5121e        ppc_83xx
 MPC8540		ppc_85xx
@@ -70,13 +76,19 @@ PA6T-1682M	pa6t
 EOF`
 
 function usage {
-    echo "usage: `basename $0` <from> <to> <key>"		1>&2
-    echo "	Looks up <key> in the table { <from>, <to> }"	1>&2 
-    echo "	where <from> and <to> are fieldnames."		1>&2
-    echo "       `basename $0` <column>"			1>&2
-    echo "	Lists all possible values for <column> where"   1>&2
-    echo "	<column> is a fieldname."			1>&2
-    echo "	Valid field names: 'board', 'cpu', 'eldkcc'"	1>&2
+    echo "usage: `basename $0` <from> <to> <key>"				1>&2
+    echo "	The table { <from>, <to> } is queried for <from> = <key>"	1>&2 
+    echo "	where <from> and <to> are fieldnames."				1>&2
+    echo "       `basename $0` <column>"					1>&2
+    echo "	Lists all possible values for <column> where"   		1>&2
+    echo "	<column> is a fieldname."					1>&2
+    echo "	Valid field names: 'board', 'cpu', 'eldkcc'"			1>&2
+    echo ""									1>&2
+    echo "	Examples:"							1>&2
+    echo "	eldk-map cpu board ppc440epx  - show all boards using 440EPx"	1>&2
+    echo "	eldk-map eldkcc board ppc_8xx - show all boards using ppc_8xx-" 1>&2
+    echo "	  as CROSS_COMPILE."						1>&2
+    echo "	eldk-map cpu                  - show all known CPUs"		1>&2
     exit 1
 }
 
@@ -180,6 +192,11 @@ then
 	cpu_to_board $KEY
     elif [ "$FROM" = "eldkcc" -a "$TO" = "cpu" ]; then
 	eldkcc_to_cpu $KEY
+    elif [ "$FROM" = "eldkcc" -a "$TO" = "board" ]; then
+	for CPU in `eldkcc_to_cpu $KEY`
+	do
+	    cpu_to_board $(toupper $CPU)
+	done
     else
 	echo "$0: unknown lookup operation $FROM -> $TO" 1>&2
 	exit 1

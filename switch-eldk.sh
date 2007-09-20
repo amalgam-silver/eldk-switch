@@ -8,9 +8,9 @@
 #
 
 function usage {
-    echo "usage: $0 [-r <release>] <board or cpu>"		1>&2
-    echo "	Switches to using the ELDK <release> for"	1>&2
-    echo "	<board> or <cpu>."				1>&2
+    echo "usage: `basename $0` [-r <release>] <board, cpu or eldkcc>"	1>&2
+    echo "	Switches to using the ELDK <release> for"		1>&2
+    echo "	<board>, <cpu> or <eldkcc>."				1>&2
     exit 1
 }
 
