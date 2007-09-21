@@ -1,5 +1,5 @@
 #/bin/bash
-# 
+#
 # Call with "eval `switch-eldk.sh <arch, or board>`"
 # e.g. put "switch-eldk() { eval `switch-eldk.sh $*`; }"
 # in your .bashrc
@@ -24,20 +24,20 @@ function add_path {
 function prune_path {
     if echo $PATH | grep -q $1
     then
-        PATH=`echo $PATH | tr : "\n" | grep -v $1 | tr "\n" : | sed 's/:$//'`
+	PATH=`echo $PATH | tr : "\n" | grep -v $1 | tr "\n" : | sed 's/:$//'`
     fi
 }
 
 # Parse options (bash extension)
-while getopts r: OPTION
+while getopts r: option
 do
-    case $OPTION in
-        r)      REV=$OPTARG
-                ;;
-        *)      echo "unknown option $OPTARG" 1>&2
+    case $option in
+	r)      rev=$OPTARG
+		;;
+	*)      echo "unknown option $OPTARG" 1>&2
 		usage
 		exit 1
-                ;;
+		;;
     esac
 done
 shift $(( $OPTIND - 1 ))
@@ -51,18 +51,18 @@ fi
 # This is our "smart as a collie" lookup logic.  First we try to
 # interpret the argument as a board, then as a cpu and finally only as
 # the ELDK CROSS_COMPILE value.
-CPU=`eldk-map board cpu $1`
-if [ -n "$CPU" ]
+cpu=`eldk-map board cpu $1`
+if [ -n "$cpu" ]
 then
-    echo "echo \"[ $1 is using $CPU ]\";"
-    ELDKCC=`eldk-map cpu eldkcc $CPU`
+    echo "echo \"[ $1 is using $cpu ]\";"
+    eldkcc=`eldk-map cpu eldkcc $cpu`
 else
-    ELDKCC=`eldk-map cpu eldkcc $1`
-    if [ -z "$ELDKCC" ]
+    eldkcc=`eldk-map cpu eldkcc $1`
+    if [ -z "$eldkcc" ]
     then
 	if eldk-map eldkcc | grep -q "^${1}\$"
 	then
-	    ELDKCC=$1
+	    eldkcc=$1
 	else
 	    echo "`basename $0`: don't know what $1 might be, giving up."  1>&2
 	    exit 1
@@ -70,29 +70,29 @@ else
     fi
 fi
 
-if [ -z "$ELDKCC" ]
+if [ -z "$eldkcc" ]
 then
     echo "Internal error" >&2
 else
-    case $REV in
+    case $rev in
 	3.1.1)
-	    ELDK=eldk-3.1.1
+	    eldk=eldk-3.1.1
 	    ;;
 	4.0)
-	    ELDK=eldk-4.0
+	    eldk=eldk-4.0
 	    ;;
 	4.1)
-	    ELDK=eldk-4.1
+	    eldk=eldk-4.1
 	    ;;
 	*)
-	    ELDK=eldk-4.2
+	    eldk=eldk-4.2
 	    ;;
     esac
-    
+
     prune_path eldk
-    add_path /opt/${ELDK}/bin
-    add_path /opt/${ELDK}/usr/bin
+    add_path /opt/${eldk}/bin
+    add_path /opt/${eldk}/usr/bin
     echo "PATH=$PATH ;"
-    echo "export CROSS_COMPILE=${ELDKCC}- ;"
-    echo "echo \"Setup for ${ELDKCC} (using $ELDK)\""
+    echo "export CROSS_COMPILE=${eldkcc}- ;"
+    echo "echo \"Setup for ${eldkcc} (using $eldk)\""
 fi
