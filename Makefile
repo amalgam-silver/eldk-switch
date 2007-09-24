@@ -1,6 +1,6 @@
 # Makefile for switch-eldk
 #
-# (C) 2007 by Detlev Zundel <dzu@denx.de>, DENX Software Engineering GmbH 
+# (C) 2007 by Detlev Zundel <dzu@denx.de>, DENX Software Engineering GmbH
 #
 
 PREFIX = /usr/local

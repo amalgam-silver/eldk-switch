@@ -33,11 +33,15 @@ pm854		MPC8540
 # PA-Semi
 electra		PA6T-1682M
 
+# Texas Instruments
+omap5912	OMAP5912
+
 # TQ-Systems
 tqm8xxl		MPC823
 tqm860		MPC860
 tqm885d		MPC885
 tqm5200		MPC5200
+tqm8349		MPC8349
 tqm8540		MPC8540
 tqm8560		MPC8560
 EOF`
@@ -46,6 +50,7 @@ cpu_to_eldkcc=`sed -e 's/#.*//' -e '/^$/d' <<EOF
 # AMCC
 PPC405EP	ppc_4xx
 PPC405EZ	ppc_4xx
+PPC405GP	ppc_4xx
 PPC405GPr	ppc_4xx
 PPC440EP	ppc_4xxFP
 PPC440EPx	ppc_4xxFP
@@ -65,7 +70,10 @@ MPC860		ppc_8xx
 MPC885		ppc_8xx
 MPC5200		ppc_6xx
 MPC5121e        ppc_83xx
+MPC7448		ppc_74xx
+MPC8349		ppc_83xx
 MPC8540		ppc_85xx
+MPC8541		ppc_85xx
 MPC8560		ppc_85xx
 
 # Infineon
@@ -73,6 +81,9 @@ INCAIP		mips_4KCle
 
 # PA-Semi
 PA6T-1682M	pa6t
+
+# TI
+OMAP5912	arm
 EOF`
 
 function usage {
@@ -103,64 +114,32 @@ function tolower {
 
 # Map a board to its cpu
 function board_to_cpu {
-    while read board cpu
-    do
-	if [ "$1" = "`toupper $board`" ]
-	then
-	    echo $cpu
-	    break
-	fi
-    done <<<"$board_to_cpu"
+    sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }' <<<"$board_to_cpu"
 }
 
 # Map a cpu to all boards using it
 function cpu_to_board {
-    while read board cpu
-    do
-	if [ "$1" = "`toupper $cpu`" ]
-	then
-	    echo $board
-	fi
-    done <<<"$board_to_cpu"
+    sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }' <<<"$board_to_cpu"
 }
 
 # Enumerate a column over the whole table
 function enum_board_cpu {
-    while read board cpu
-    do
-	eval "echo \$$1"
-    done <<<"$board_to_cpu"
+    sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/' <<<"$board_to_cpu"
 }
 
 # Map a CPU to its ELDK architecture
 function cpu_to_eldkcc {
-    while read cpu eldkcc
-    do
-	if [ "$1" = "`toupper $cpu`" ]
-	then
-	    echo $eldkcc
-	    break
-	fi
-    done <<<"$cpu_to_eldkcc"
+    sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }' <<<"$cpu_to_eldkcc"
 }
 
 # Map a CPU to its ELDK architecture
 function eldkcc_to_cpu {
-    while read cpu eldkcc
-    do
-	if [ "$1" = "`toupper $eldkcc`" ]
-	then
-	    echo $cpu
-	fi
-    done <<<"$cpu_to_eldkcc"
+    sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }' <<<"$cpu_to_eldkcc"
 }
 
 # Enumerate a column over the whole table
 function enum_cpu_eldkcc {
-    while read cpu eldkcc
-    do
-	eval "echo \$$1"
-    done <<<"$cpu_to_eldkcc"
+    sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/' <<<"$cpu_to_eldkcc"
 }
 
 if [ $# -eq 1 ]
@@ -168,9 +147,15 @@ then
     # Lookup all values
     column=$(tolower $1)
     case ${column:0:1} in
-	b)      enum_board_cpu board | sort | uniq ;;
-	c)	enum_cpu_eldkcc cpu | sort | uniq ;;
-	e)      enum_cpu_eldkcc eldkcc | sort | uniq ;;
+	b)      enum_board_cpu 1 | sort | uniq ;;
+	c)      enum_cpu_eldkcc 1 | sort | uniq ;;
+	e)      enum_cpu_eldkcc 2 | sort | uniq ;;
+	v)      
+	    for cpu in `enum_board_cpu 2` ; do
+	    if [ -z `cpu_to_eldkcc $(toupper $cpu)` ] ; then
+		echo "Unknown CPU: $cpu" 1>&2
+	    fi
+	    done ;;
 	*)	echo "$0: unknown column $1" 1>&2 ; exit 1 ;;
     esac
 elif [ $# -eq 3 ]
