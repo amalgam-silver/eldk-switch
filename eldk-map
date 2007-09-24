@@ -80,7 +80,7 @@ function usage {
     echo "	The table { <from>, <to> } is queried for <from> = <key>"	1>&2
     echo "	where <from> and <to> are fieldnames."				1>&2
     echo "       `basename $0` <column>"					1>&2
-    echo "	Lists all possible values for <column> where"		1>&2
+    echo "	Lists all possible values for <column> where"			1>&2
     echo "	<column> is a fieldname."					1>&2
     echo "	Valid field names: 'board', 'cpu', 'eldkcc'"			1>&2
     echo "	(can be abbreviated as 'b', 'c', 'e')"				1>&2
@@ -89,7 +89,7 @@ function usage {
     echo "	eldk-map c b ppc440epx  - show all boards using 440EPx"		1>&2
     echo "	eldk-map e b ppc_8xx    - show all boards using ppc_8xx-"	1>&2
     echo "	  as CROSS_COMPILE."						1>&2
-    echo "	eldk-map c                  - show all known CPUs"		1>&2
+    echo "	eldk-map c              - show all known CPUs"			1>&2
     exit 1
 }
 
