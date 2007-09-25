@@ -7,21 +7,21 @@
 # (C) by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
 #
 
-function usage {
+usage () {
     echo "usage: `basename $0` [-r <release>] <board, cpu or eldkcc>"	1>&2
     echo "	Switches to using the ELDK <release> for"		1>&2
     echo "	<board>, <cpu> or <eldkcc>."				1>&2
     exit 1
 }
 
-function add_path {
+add_path () {
     if echo $PATH | grep -vq $1
     then
 	PATH=$PATH:$1
     fi
 }
 
-function prune_path {
+prune_path () {
     if echo $PATH | grep -q $1
     then
 	PATH=`echo $PATH | tr : "\n" | grep -v $1 | tr "\n" : | sed 's/:$//'`
