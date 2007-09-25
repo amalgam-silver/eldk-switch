@@ -26,8 +26,19 @@ yucca_a		PPC440SPe
 lite5200b	MPC5200
 mpc5121		MPC5121e
 
+# PA-Semi
+electra		PA6T-1682M
+
+# Texas Instruments
+omap5912	OMAP5912
+
+# Board manufacturers
+ 
 # MicroSys
 pm520		MPC5200
+pm826		MPC8260
+pm827		MPC8270
+pm828		MPC8280
 pm854		MPC8540
 
 # PA-Semi
@@ -71,10 +82,16 @@ MPC885		ppc_8xx
 MPC5200		ppc_6xx
 MPC5121e        ppc_83xx
 MPC7448		ppc_74xx
+MPC8260		ppc_6xx
+MPC8270		ppc_6xx
+MPC8280		ppc_6xx
 MPC8349		ppc_83xx
 MPC8540		ppc_85xx
 MPC8541		ppc_85xx
 MPC8560		ppc_85xx
+
+# IDT
+IDTRC32434	mips_4KCle
 
 # Infineon
 INCAIP		mips_4KCle
