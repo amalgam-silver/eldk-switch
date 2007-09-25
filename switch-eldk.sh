@@ -14,6 +14,8 @@ usage () {
     echo "usage: `basename $0` [-r <release>] <board, cpu or eldkcc>"	1>&2
     echo "	Switches to using the ELDK <release> for"		1>&2
     echo "	<board>, <cpu> or <eldkcc>."				1>&2
+    echo "       `basename $0` -q"					1>&2
+    echo "	Queries the installed ELDKs"				1>&2
     exit 1
 }
 
@@ -31,14 +33,90 @@ prune_path () {
     fi
 }
 
+eldk_version () {
+    if [ -r ${1}/version ]; then
+	sed -n '1 { s/^[^0-9]*\(.*\)$/\1/ ; p }' ${1}/version
+    else
+	echo "unknown"
+    fi
+}
+
+eldk_arches () {
+    sed -n '2~1 { s/^\(.*\):.*$/\1/ ; p }' ${1}/version
+}
+
+# Unexpand sorted entries by common prefix elimination
+unexpand () {
+    local prefix len lenm2 active last
+
+    active=0
+    len=1
+    last=$1
+    shift
+    for item in $*
+    do
+	if [ $active -eq 0 ]; then
+	    # Searching a prefix
+	    lenm2=-1
+	    while [ "${last:$lenm2:1}" != "_" \
+		    -a "${last:0:$len}" = "${item:0:$len}" ]; do
+		len=$(expr $len + 1)
+		lenm2=$(expr $len - 2)
+	    done
+	    if [ $len -eq 1 ]; then
+		echo -n "$last "
+		last=$item
+		continue
+	    fi
+	    active=1
+	    len=$(expr $len - 1)
+	    prefix=${last:0:$len}
+	    echo -n "${prefix}{${last:$len},${item:$len}"
+	else
+	    # unxepanding prefixes
+	    last=$item
+	    if [ "$prefix" = "${item:0:$len}" ]; then
+		echo -n ",${item:$len}"
+	    else
+		active=0
+		len=1
+		echo -n "} "
+	    fi
+	fi
+    done
+    # Cleanup
+    if [ $active -eq 0 ]; then
+	echo "$last"
+    else
+	echo "}"
+    fi
+}
+
+show_versions () {
+    local dir
+    local ver
+
+    echo ",--- Installed ELDK versions:" 1>&2
+    for dir in ${eldk_prefix}*
+    do
+	ver=$(eldk_version $dir)
+	if [ "$ver" != "unknown" ]; then
+	    echo -en "eldk ${ver}: $dir " 1>&2
+	    unexpand $(eldk_arches $dir)  1>&2
+	fi
+    done
+}
+
 # Parse options (bash extension)
-while getopts r: option
+while getopts qr: option
 do
     case $option in
+	q)      show_versions
+	        exit 1
+		;;
 	r)      rev=$OPTARG
 		;;
-	*)      echo "unknown option $OPTARG" 1>&2
-		usage
+	*)      usage
 		exit 1
 		;;
     esac
@@ -77,7 +155,7 @@ if [ -z "$eldkcc" ]
 then
     echo "Internal error" >&2
 else
-    prune_path eldk
+    prune_path ${eldk_prefix}
     if [ ! -x ${eldk_prefix}${rev}/usr/bin/${eldkcc}-gcc ]
     then
 	echo "`basename $0`: ELDK $rev for $eldkcc is not installed!" 1>&2
