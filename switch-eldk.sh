@@ -7,6 +7,9 @@
 # (C) by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
 #
 
+eldk_prefix=/opt/eldk-
+rev=4.2
+
 usage () {
     echo "usage: `basename $0` [-r <release>] <board, cpu or eldkcc>"	1>&2
     echo "	Switches to using the ELDK <release> for"		1>&2
@@ -54,7 +57,7 @@ fi
 cpu=`eldk-map board cpu $1`
 if [ -n "$cpu" ]
 then
-    echo "echo \"[ $1 is using $cpu ]\";"
+    echo "[ $1 is using $cpu ]" 1>&2
     eldkcc=`eldk-map cpu eldkcc $cpu`
 else
     eldkcc=`eldk-map cpu eldkcc $1`
@@ -74,25 +77,15 @@ if [ -z "$eldkcc" ]
 then
     echo "Internal error" >&2
 else
-    case $rev in
-	3.1.1)
-	    eldk=eldk-3.1.1
-	    ;;
-	4.0)
-	    eldk=eldk-4.0
-	    ;;
-	4.1)
-	    eldk=eldk-4.1
-	    ;;
-	*)
-	    eldk=eldk-4.2
-	    ;;
-    esac
-
     prune_path eldk
-    add_path /opt/${eldk}/bin
-    add_path /opt/${eldk}/usr/bin
+    if [ ! -x ${eldk_prefix}${rev}/usr/bin/${eldkcc}-gcc ]
+    then
+	echo "`basename $0`: ELDK $rev for $eldkcc is not installed!" 1>&2
+	exit 1
+    fi
+    add_path ${eldk_prefix}${rev}/bin
+    add_path ${eldk_prefix}${rev}/usr/bin
     echo "PATH=$PATH ;"
-    echo "export CROSS_COMPILE=${eldkcc}- ;"
-    echo "echo \"Setup for ${eldkcc} (using $eldk)\""
+    echo "export CROSS_COMPILE=${eldkcc}-"
+    echo "Setup for ${eldkcc} (using ELDK $rev)" 1>&2
 fi
