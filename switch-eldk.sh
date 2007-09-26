@@ -96,13 +96,17 @@ show_versions () {
     local dir
     local ver
 
-    echo ",--- Installed ELDK versions:" 1>&2
+    echo ",+--- Installed ELDK versions:" 1>&2
     for dir in ${eldk_prefix}*
     do
-	ver=$(eldk_version $dir)
-	if [ "$ver" != "unknown" ]; then
-	    echo -en "eldk ${ver}: $dir " 1>&2
-	    unexpand $(eldk_arches $dir)  1>&2
+	if [ ! -L $dir ]; then
+	    ver=$(eldk_version $dir)
+	    if [ "$ver" != "unknown" ]; then
+		echo -en "eldk ${ver}: $dir " 1>&2
+		unexpand $(eldk_arches $dir | sort)  1>&2
+	    fi
+	else
+	    echo "eldk ${ver}: $dir  ->  $(readlink $dir)"
 	fi
     done
 }
