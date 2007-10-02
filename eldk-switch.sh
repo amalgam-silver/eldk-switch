@@ -106,7 +106,7 @@ show_versions () {
 		unexpand $(eldk_arches $dir | sort)  1>&2
 	    fi
 	else
-	    echo "eldk ${ver}: $dir  ->  $(readlink $dir)"
+	    echo "eldk ${ver}: $dir  ->  $(readlink $dir)" 1>&2
 	fi
     done
 }
