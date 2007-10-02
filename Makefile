@@ -1,4 +1,4 @@
-# Makefile for switch-eldk
+# Makefile for eldk-switch
 #
 # (C) 2007 by Detlev Zundel <dzu@denx.de>, DENX Software Engineering GmbH
 #
@@ -9,7 +9,7 @@ LIBDIR = $(PREFIX)/lib
 
 INSTALL = /usr/bin/install
 
-bin = switch-eldk.sh eldk-map
+bin = eldk-switch.sh eldk-map
 
 .PHONY:	install clean
 

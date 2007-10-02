@@ -1,8 +1,8 @@
 # Sample extensions for .bashrc to optimize ELDK functionality
 
-# This is the main interface to switch-eldk.sh
-switch-eldk() {
-    eval `switch-eldk.sh $*`;
+# This is the main interface to eldk-switch.sh
+eldk-switch () {
+    eval `eldk-switch.sh $*`;
 }
 
 # This is a nice wrapper for PS1 strings

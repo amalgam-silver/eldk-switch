@@ -1,7 +1,7 @@
 #/bin/bash
 #
-# Call with "eval `switch-eldk.sh <arch, or board>`"
-# e.g. put "switch-eldk() { eval `switch-eldk.sh $*`; }"
+# Call with "eval `eldk-switch.sh <arch, or board>`"
+# e.g. put "eldk-switch() { eval `eldk-switch.sh $*`; }"
 # in your .bashrc
 #
 # (C) by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
