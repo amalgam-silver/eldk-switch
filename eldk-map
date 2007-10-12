@@ -100,7 +100,7 @@ INCAIP		mips_4KCle
 PA6T-1682M	pa6t
 
 # TI
-OMAP5912	arm
+OMAP5912	arm-linux
 EOF`
 
 function usage {
