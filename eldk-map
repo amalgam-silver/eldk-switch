@@ -97,7 +97,7 @@ IDTRC32434	mips_4KCle
 INCAIP		mips_4KCle
 
 # PA-Semi
-PA6T-1682M	pa6t
+PA6T-1682M	ppc64-linux
 
 # TI
 OMAP5912	arm-linux
