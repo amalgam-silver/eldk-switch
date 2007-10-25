@@ -6,9 +6,12 @@ acadia		PPC405EZ
 bamboo		PPC440EP
 bubinga		PPC405EP
 ebony		PPC440GP
+haleakala	PPC405EXr
 katmai		PPC440SPe
 katmai2		PPC440SPe
+kilauea		PPC405EX
 luan		PPC440SP
+makalu		PPC405EX
 ocotea		PPC440GX
 rainier		PPC440GRx
 sequoia		PPC440EPx
@@ -60,6 +63,8 @@ EOF`
 cpu_to_eldkcc=`sed -e 's/#.*//' -e '/^$/d' <<EOF
 # AMCC
 PPC405EP	ppc_4xx
+PPC405EX	ppc_4xx
+PPC405EXr	ppc_4xx
 PPC405EZ	ppc_4xx
 PPC405GP	ppc_4xx
 PPC405GPr	ppc_4xx
