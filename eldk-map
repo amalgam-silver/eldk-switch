@@ -78,7 +78,7 @@ PPC440SP	ppc_4xx
 PPC440SPe	ppc_4xx
 
 # Atmel
-AT91RM9200	arm
+AT91RM9200	arm-linux
 
 # Freescale
 MPC823		ppc_8xx
