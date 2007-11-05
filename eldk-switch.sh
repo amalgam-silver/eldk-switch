@@ -19,6 +19,7 @@ usage () {
     exit 1
 }
 
+# Add $1 at the end of path only if not already present
 add_path () {
     if echo $PATH | grep -vq $1
     then
@@ -26,6 +27,7 @@ add_path () {
     fi
 }
 
+# Prune PATH of components starting with $1
 prune_path () {
     if echo $PATH | grep -q $1
     then
@@ -33,6 +35,7 @@ prune_path () {
     fi
 }
 
+# Get version information by looking at the version file in an ELDK installation
 eldk_version () {
     if [ -r ${1}/version ]; then
 	sed -n '1 { s/^[^0-9]*\(.*\)$/\1/ ; p }' ${1}/version
@@ -41,6 +44,7 @@ eldk_version () {
     fi
 }
 
+# Get supported architectures by looking at the version file in an ELDK installation
 eldk_arches () {
     sed -n '2~1 { s/^\(.*\):.*$/\1/ ; p }' ${1}/version
 }
@@ -92,6 +96,7 @@ unexpand () {
     fi
 }
 
+# Iterate over all installed ELDK versions and show info
 show_versions () {
     local dir
     local ver
@@ -157,9 +162,9 @@ fi
 
 if [ -z "$eldkcc" ]
 then
-    echo "Internal error" >&2
+    echo "Internal error" 1>&2
 else
-    prune_path ${eldk_prefix}
+    prune_path ${eldk_prefix/%-}
     if [ ! -x ${eldk_prefix}${rev}/usr/bin/${eldkcc}-gcc ]
     then
 	echo "`basename $0`: ELDK $rev for $eldkcc is not installed!" 1>&2
