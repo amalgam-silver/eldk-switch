@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 #
 # Call with "eval `eldk-switch.sh <arch, or board>`"
 # e.g. put "eldk-switch() { eval `eldk-switch.sh $*`; }"
