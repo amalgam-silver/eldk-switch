@@ -108,7 +108,7 @@ PA6T-1682M	ppc64-linux
 OMAP5912	arm-linux
 EOF`
 
-function usage {
+usage () {
     echo "usage: `basename $0` <from> <to> <key>"				1>&2
     echo "	The table { <from>, <to> } is queried for <from> = <key>"	1>&2
     echo "	where <from> and <to> are fieldnames."				1>&2
@@ -126,41 +126,41 @@ function usage {
     exit 1
 }
 
-function toupper {
+toupper () {
     echo $1 | tr 'a-z' 'A-Z'
 }
 
-function tolower {
+tolower () {
     echo $1 | tr 'A-Z' 'a-z'
 }
 
 # Map a board to its cpu
-function board_to_cpu {
+board_to_cpu () {
     sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }' <<<"$board_to_cpu"
 }
 
 # Map a cpu to all boards using it
-function cpu_to_board {
+cpu_to_board () {
     sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }' <<<"$board_to_cpu"
 }
 
 # Enumerate a column over the whole table
-function enum_board_cpu {
+enum_board_cpu () {
     sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/' <<<"$board_to_cpu"
 }
 
 # Map a CPU to its ELDK architecture
-function cpu_to_eldkcc {
+cpu_to_eldkcc () {
     sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }' <<<"$cpu_to_eldkcc"
 }
 
 # Map a CPU to its ELDK architecture
-function eldkcc_to_cpu {
+eldkcc_to_cpu () {
     sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }' <<<"$cpu_to_eldkcc"
 }
 
 # Enumerate a column over the whole table
-function enum_cpu_eldkcc {
+enum_cpu_eldkcc () {
     sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/' <<<"$cpu_to_eldkcc"
 }
 
