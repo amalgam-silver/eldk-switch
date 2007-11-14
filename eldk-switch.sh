@@ -138,8 +138,8 @@ then
     usage
 fi
 
-# This is our "smart as a collie" lookup logic.  First we try to
-# interpret the argument as a board, then as a cpu and finally only as
+# This is our "smart as a collie" lookup logic.  We try to interpret
+# the argument as a board, as a cpu, as an alias and finally only as
 # the ELDK CROSS_COMPILE value.
 cpu=`eldk-map board cpu $1`
 if [ -n "$cpu" ]
@@ -150,12 +150,16 @@ else
     eldkcc=`eldk-map cpu eldkcc $1`
     if [ -z "$eldkcc" ]
     then
-	if eldk-map eldkcc | grep -q "^${1}\$"
+	eldkcc=`eldk-map alias eldkcc $1`
+	if [ -z "$eldkcc" ]
 	then
-	    eldkcc=$1
-	else
-	    echo "`basename $0`: don't know what $1 might be, giving up."  1>&2
-	    exit 1
+	    if eldk-map eldkcc | grep -q "^${1}\$"
+	    then
+		eldkcc=$1
+	    else
+		echo "`basename $0`: don't know what $1 might be, giving up."  1>&2
+		exit 1
+	    fi
 	fi
     fi
 fi
@@ -175,4 +179,4 @@ else
     echo "PATH=$PATH ;"
     echo "export CROSS_COMPILE=${eldkcc}-"
     echo "Setup for ${eldkcc} (using ELDK $rev)" 1>&2
-fi
+f
