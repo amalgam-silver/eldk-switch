@@ -179,4 +179,4 @@ else
     echo "PATH=$PATH ;"
     echo "export CROSS_COMPILE=${eldkcc}-"
     echo "Setup for ${eldkcc} (using ELDK $rev)" 1>&2
-f
+fi
