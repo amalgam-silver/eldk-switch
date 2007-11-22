@@ -9,7 +9,7 @@ LIBDIR = $(PREFIX)/lib
 
 INSTALL = /usr/bin/install
 
-bin = eldk-switch.sh eldk-map
+bin = eldk-switch.sh eldk-map eldk-map.dat
 
 .PHONY:	install clean
 

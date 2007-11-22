@@ -1,0 +1,119 @@
+# ======================
+# :Section board_to_cpu:
+# ======================
+
+# AMCC Eval boards
+acadia		PPC405EZ
+bamboo		PPC440EP
+bubinga		PPC405EP
+ebony		PPC440GP
+haleakala	PPC405EXr
+katmai		PPC440SPe
+katmai2		PPC440SPe
+kilauea		PPC405EX
+luan		PPC440SP
+makalu		PPC405EX
+ocotea		PPC440GX
+rainier		PPC440GRx
+sequoia		PPC440EPx
+sycamore	PPC405GPr
+taihu		PPC405EP
+taishan		PPC440GX
+walnut		PPC405GP
+whirlwind	PPC440SPe
+yellowstone	PPC440GR
+yosemite	PPC440EP
+yucca		PPC440SPe
+yucca_a		PPC440SPe
+
+# Freescale
+lite5200b	MPC5200
+mpc5121		MPC5121e
+
+# PA-Semi
+electra		PA6T-1682M
+
+# Texas Instruments
+omap5912	OMAP5912
+
+# Board manufacturers
+
+# MicroSys
+pm520		MPC5200
+pm826		MPC8260
+pm827		MPC8270
+pm828		MPC8280
+pm854		MPC8540
+
+# TQ-Systems
+tqm8xxl		MPC823
+tqm860		MPC860
+tqm885d		MPC885
+tqm5200		MPC5200
+tqm8349		MPC8349
+tqm8540		MPC8540
+tqm8560		MPC8560
+
+# =======================
+# :Section cpu_to_eldkcc:
+# =======================
+
+# AMCC
+PPC405EP	ppc_4xx
+PPC405EX	ppc_4xx
+PPC405EXr	ppc_4xx
+PPC405EZ	ppc_4xx
+PPC405GP	ppc_4xx
+PPC405GPr	ppc_4xx
+PPC440EP	ppc_4xxFP
+PPC440EPx	ppc_4xxFP
+PPC440GP	ppc_4xx
+PPC440GR	ppc_4xx
+PPC440GRx	ppc_4xx
+PPC440GX	ppc_4xx
+PPC440SP	ppc_4xx
+PPC440SPe	ppc_4xx
+
+# Atmel
+AT91RM9200	arm-linux
+
+# Freescale
+MPC823		ppc_8xx
+MPC860		ppc_8xx
+MPC885		ppc_8xx
+MPC5200		ppc_6xx
+MPC5121e        ppc_83xx
+MPC7448		ppc_74xx
+MPC8260		ppc_6xx
+MPC8270		ppc_6xx
+MPC8280		ppc_6xx
+MPC8349		ppc_83xx
+MPC8540		ppc_85xx
+MPC8541		ppc_85xx
+MPC8560		ppc_85xx
+
+# IDT
+IDTRC32434	mips_4KCle
+
+# Infineon
+INCAIP		mips_4KCle
+
+# PA-Semi
+PA6T-1682M	ppc64-linux
+
+# TI
+OMAP5912	arm-linux
+
+# =========================
+# :Section alias_to_eldkcc:
+# =========================
+mpc8xx	ppc_8xx
+8xx	ppc_8xx
+mpc82xx	ppc_6xx
+82xx	ppc_6xx
+mpc83xx	ppc_83xx
+83xx	ppc_83xx
+mpc85xx	ppc_85xx
+85xx	ppc_85xx
+4xx	ppc_4xx
+4xxFP	ppc_4xxFP

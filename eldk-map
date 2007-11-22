@@ -1,125 +1,6 @@
 #!/bin/bash
 
-board_to_cpu=`sed -e 's/#.*//' -e '/^$/d' <<EOF
-# AMCC Eval boards
-acadia		PPC405EZ
-bamboo		PPC440EP
-bubinga		PPC405EP
-ebony		PPC440GP
-haleakala	PPC405EXr
-katmai		PPC440SPe
-katmai2		PPC440SPe
-kilauea		PPC405EX
-luan		PPC440SP
-makalu		PPC405EX
-ocotea		PPC440GX
-rainier		PPC440GRx
-sequoia		PPC440EPx
-sycamore	PPC405GPr
-taihu		PPC405EP
-taishan		PPC440GX
-walnut		PPC405GP
-whirlwind	PPC440SPe
-yellowstone	PPC440GR
-yosemite	PPC440EP
-yucca		PPC440SPe
-yucca_a		PPC440SPe
-
-# Freescale
-lite5200b	MPC5200
-mpc5121		MPC5121e
-
-# PA-Semi
-electra		PA6T-1682M
-
-# Texas Instruments
-omap5912	OMAP5912
-
-# Board manufacturers
- 
-# MicroSys
-pm520		MPC5200
-pm826		MPC8260
-pm827		MPC8270
-pm828		MPC8280
-pm854		MPC8540
-
-# PA-Semi
-electra		PA6T-1682M
-
-# Texas Instruments
-omap5912	OMAP5912
-
-# TQ-Systems
-tqm8xxl		MPC823
-tqm860		MPC860
-tqm885d		MPC885
-tqm5200		MPC5200
-tqm8349		MPC8349
-tqm8540		MPC8540
-tqm8560		MPC8560
-EOF`
-
-cpu_to_eldkcc=`sed -e 's/#.*//' -e '/^$/d' <<EOF
-# AMCC
-PPC405EP	ppc_4xx
-PPC405EX	ppc_4xx
-PPC405EXr	ppc_4xx
-PPC405EZ	ppc_4xx
-PPC405GP	ppc_4xx
-PPC405GPr	ppc_4xx
-PPC440EP	ppc_4xxFP
-PPC440EPx	ppc_4xxFP
-PPC440GP	ppc_4xx
-PPC440GR	ppc_4xx
-PPC440GRx	ppc_4xx
-PPC440GX	ppc_4xx
-PPC440SP	ppc_4xx
-PPC440SPe	ppc_4xx
-
-# Atmel
-AT91RM9200	arm-linux
-
-# Freescale
-MPC823		ppc_8xx
-MPC860		ppc_8xx
-MPC885		ppc_8xx
-MPC5200		ppc_6xx
-MPC5121e        ppc_83xx
-MPC7448		ppc_74xx
-MPC8260		ppc_6xx
-MPC8270		ppc_6xx
-MPC8280		ppc_6xx
-MPC8349		ppc_83xx
-MPC8540		ppc_85xx
-MPC8541		ppc_85xx
-MPC8560		ppc_85xx
-
-# IDT
-IDTRC32434	mips_4KCle
-
-# Infineon
-INCAIP		mips_4KCle
-
-# PA-Semi
-PA6T-1682M	ppc64-linux
-
-# TI
-OMAP5912	arm-linux
-EOF`
-
-alias_to_eldkcc=`sed -e 's/#.*//' -e '/^$/d' <<EOF
-mpc8xx	ppc_8xx
-8xx	ppc_8xx
-mpc82xx	ppc_6xx
-82xx	ppc_6xx
-mpc83xx	ppc_83xx
-83xx	ppc_83xx
-mpc85xx	ppc_85xx
-85xx	ppc_85xx
-4xx	ppc_4xx
-4xxFP	ppc_4xxFP
-EOF`
+DATA=`dirname $0`/eldk-map.dat
 
 usage () {
     echo "usage: `basename $0` <from> <to> <key>"				1>&2
@@ -147,44 +28,49 @@ tolower () {
     echo $1 | tr 'A-Z' 'a-z'
 }
 
+# Get a section from our datafile
+get_section () {
+    sed -n '/:section '$1':/I,/:section/I {s/#.*//; /^$/d; p}' < $DATA
+}
+
 # Map a board to its cpu
 board_to_cpu () {
-    sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }' <<<"$board_to_cpu"
+    get_section board_to_cpu | sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }'
 }
 
 # Map a cpu to all boards using it
 cpu_to_board () {
-    sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }' <<<"$board_to_cpu"
+    get_section board_to_cpu | sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }'
 }
 
 # Enumerate a column over the whole table
 enum_board_cpu () {
-    sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/' <<<"$board_to_cpu"
+    get_section board_to_cpu | sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/'
 }
 
 # Map a CPU to its ELDK architecture
 cpu_to_eldkcc () {
-    sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }' <<<"$cpu_to_eldkcc"
+    get_section cpu_to_eldkcc | sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }'
 }
 
-# Map a CPU to its ELDK architecture
+# Map an ELDK architecture to all CPUs using it
 eldkcc_to_cpu () {
-    sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }' <<<"$cpu_to_eldkcc"
+    get_section cpu_to_eldkcc | sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }'
 }
 
 # Enumerate a column over the whole table
 enum_cpu_eldkcc () {
-    sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/' <<<"$cpu_to_eldkcc"
+    get_section cpu_to_eldkcc | sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/'
 }
 
 # Map an alias to ELDK architecture
 alias_to_eldkcc () {
-    sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }' <<<"$alias_to_eldkcc"
+    get_section alias_to_eldkcc | sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }'
 }
 
 # Enumerate a column over the whole table
 enum_alias_eldkcc () {
-    sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/' <<<"$alias_to_eldkcc"
+    get_section alias_to_eldkcc | sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/'
 }
 
 if [ $# -eq 1 ]
@@ -194,13 +80,13 @@ then
     case ${column:0:1} in
 	a)	enum_alias_eldkcc 1 | sort | uniq ;;
 	b)      enum_board_cpu 1 | sort | uniq ;;
-	c)      enum_cpu_eldkcc 1 | sort | uniq ;;
+	c)	enum_cpu_eldkcc 1 | sort | uniq ;;
 	e)      enum_cpu_eldkcc 2 | sort | uniq ;;
-	v)      
+	v)	
 	    for cpu in `enum_board_cpu 2` ; do
-	    if [ -z `cpu_to_eldkcc $(toupper $cpu)` ] ; then
-		echo "Unknown CPU: $cpu" 1>&2
-	    fi
+	    	if [ -z `cpu_to_eldkcc $(toupper $cpu)` ] ; then
+		    echo "Unknown CPU: $cpu" 1>&2
+		fi
 	    done ;;
 	*)	echo "$0: unknown column $1" 1>&2 ; exit 1 ;;
     esac
@@ -218,9 +104,9 @@ then
 	c,b)	cpu_to_board $key ;;
 	e,c)	eldkcc_to_cpu $key ;;
 	e,b)
-	for cpu in `eldkcc_to_cpu $key` ; do
-	    cpu_to_board $(toupper $cpu)
-	done ;;
+	    for cpu in `eldkcc_to_cpu $key` ; do
+		cpu_to_board $(toupper $cpu)
+	    done ;;
 	*)  echo "$0: unknown lookup operation $from -> $to" 1>&2
 	    exit 1 ;;
     esac
