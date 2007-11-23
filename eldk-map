@@ -28,49 +28,25 @@ tolower () {
     echo $1 | tr 'A-Z' 'a-z'
 }
 
+# "Database" accessor functions
 # Get a section from our datafile
 get_section () {
     sed -n '/:section '$1':/I,/:section/I {s/#.*//; /^$/d; p}' < $DATA
 }
 
-# Map a board to its cpu
-board_to_cpu () {
-    get_section board_to_cpu | sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }'
+# Match first column
+match_first_col () {
+    sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p }'
 }
 
-# Map a cpu to all boards using it
-cpu_to_board () {
-    get_section board_to_cpu | sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }'
+# Match second column
+match_second_col () {
+    sed -n '/'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }'
 }
 
-# Enumerate a column over the whole table
-enum_board_cpu () {
-    get_section board_to_cpu | sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/'
-}
-
-# Map a CPU to its ELDK architecture
-cpu_to_eldkcc () {
-    get_section cpu_to_eldkcc | sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }'
-}
-
-# Map an ELDK architecture to all CPUs using it
-eldkcc_to_cpu () {
-    get_section cpu_to_eldkcc | sed -n '/[ \t]\+'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }'
-}
-
-# Enumerate a column over the whole table
-enum_cpu_eldkcc () {
-    get_section cpu_to_eldkcc | sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/'
-}
-
-# Map an alias to ELDK architecture
-alias_to_eldkcc () {
-    get_section alias_to_eldkcc | sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p ; q }'
-}
-
-# Enumerate a column over the whole table
-enum_alias_eldkcc () {
-    get_section alias_to_eldkcc | sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/'
+# Get column
+get_col () {
+    sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/'
 }
 
 if [ $# -eq 1 ]
@@ -78,13 +54,13 @@ then
     # Lookup all values
     column=$(tolower $1)
     case ${column:0:1} in
-	a)	enum_alias_eldkcc 1 | sort | uniq ;;
-	b)      enum_board_cpu 1 | sort | uniq ;;
-	c)	enum_cpu_eldkcc 1 | sort | uniq ;;
-	e)      enum_cpu_eldkcc 2 | sort | uniq ;;
+	a)	get_section alias_to_eldkcc | get_col 1 | sort | uniq ;;
+	b)      get_section board_to_cpu | get_col 1 | sort | uniq ;;
+	c)	get_section cpu_to_eldkcc | get_col 1 | sort | uniq ;;
+	e)      get_section cpu_to_eldkcc | get_col 2 | sort | uniq ;;
 	v)	
-	    for cpu in `enum_board_cpu 2` ; do
-	    	if [ -z `cpu_to_eldkcc $(toupper $cpu)` ] ; then
+	    for cpu in `get_section board_to_cpu | get_col 2` ; do
+		if [ -z "`get_section cpu_to_eldkcc | match_first_col $(toupper $cpu)`" ] ; then
 		    echo "Unknown CPU: $cpu" 1>&2
 		fi
 	    done ;;
@@ -98,14 +74,14 @@ then
     key=$(toupper $3)
 
     case "${from:0:1},${to:0:1}" in
-	a,e)    alias_to_eldkcc $key ;;
-	b,c)	board_to_cpu $key ;;
-	c,e)	cpu_to_eldkcc $key ;;
-	c,b)	cpu_to_board $key ;;
-	e,c)	eldkcc_to_cpu $key ;;
+	a,e)    get_section alias_to_eldkcc | match_first_col $key ;;
+	b,c)	get_section board_to_cpu | match_first_col $key ;;
+	c,e)	get_section cpu_to_eldkcc | match_first_col $key ;;
+	c,b)	get_section board_to_cpu | match_second_col $key ;;
+	e,c)	get_section cpu_to_eldkcc | match_second_col $key ;;
 	e,b)
-	    for cpu in `eldkcc_to_cpu $key` ; do
-		cpu_to_board $(toupper $cpu)
+	    for cpu in `get_section cpu_to_eldkcc | match_second_col $key` ; do
+		get_section board_to_cpu | match_second_col $(toupper $cpu)
 	    done ;;
 	*)  echo "$0: unknown lookup operation $from -> $to" 1>&2
 	    exit 1 ;;
