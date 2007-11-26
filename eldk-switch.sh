@@ -104,8 +104,8 @@ show_versions () {
     echo ",+--- Installed ELDK versions:" 1>&2
     for dir in ${eldk_prefix}*
     do
+	ver=$(eldk_version $dir)
 	if [ ! -L $dir ]; then
-	    ver=$(eldk_version $dir)
 	    if [ "$ver" != "unknown" ]; then
 		echo -en "eldk ${ver}: $dir " 1>&2
 		unexpand $(eldk_arches $dir | sort)  1>&2
