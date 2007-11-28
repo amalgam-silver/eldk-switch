@@ -58,12 +58,12 @@ then
 	b)      get_section board_to_cpu | get_col 1 | sort | uniq ;;
 	c)	get_section cpu_to_eldkcc | get_col 1 | sort | uniq ;;
 	e)      get_section cpu_to_eldkcc | get_col 2 | sort | uniq ;;
-	v)	
-	    for cpu in $(get_section board_to_cpu | get_col 2) ; do
-		if [ -z "$(get_section cpu_to_eldkcc | match_first_col $(toupper $cpu))" ] ; then
-		    echo "Unknown CPU: $cpu" 1>&2
-		fi
-	    done ;;
+	v) 	echo "Verifying board -> cpu -> eldk_cc chains" >&2
+		for cpu in $(get_section board_to_cpu | get_col 2) ; do
+		    if [ -z "$(get_section cpu_to_eldkcc | match_first_col $(toupper $cpu))" ] ; then
+			echo "Unknown CPU: $cpu" 1>&2
+		    fi
+		done ;;
 	*)	echo "$0: unknown column $1" 1>&2 ; exit 1 ;;
     esac
 elif [ $# -eq 3 ]
