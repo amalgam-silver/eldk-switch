@@ -122,9 +122,9 @@ show_versions () {
 query_version () {
     dir=$(echo $PATH | tr : "\n" | grep eldk | head -1 | sed 's/\/bin//; s/\/usr\/bin//')
     ver=$(eldk_version $dir)
-    echo "Currently using eldk ${ver} from ${dir}"	>&2
-    echo "CROSS_COMPILE=$CROSS_COMPILE"			>&2
-    [ -n "$ARCH" ] && echo "ARCH=$ARCH"			>&2
+    echo "Currently using eldk ${ver} from ${dir}"	1>&2
+    echo "CROSS_COMPILE=$CROSS_COMPILE"			1>&2
+    [ -n "$ARCH" ] && echo "ARCH=$ARCH"			1>&2
 }
 
 # Parse options (bash extension)
