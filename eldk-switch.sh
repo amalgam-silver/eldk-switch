@@ -9,6 +9,7 @@
 
 eldk_prefix=/opt/eldk-
 rev=4.2
+root_symlink=~/target-root
 
 usage () {
     echo "usage: $(basename $0) [-v] [-r <release>] <board, cpu or eldkcc>"	1>&2
@@ -132,7 +133,7 @@ while getopts lqr:v option
 do
     case $option in
 	l)      show_versions
-	        exit 1
+		exit 1
 		;;
 	q)	query_version
 		exit 1
@@ -200,4 +201,10 @@ else
     echo $cmds
     [ -n "$verbose" ] && echo $cmds | sed 's/ ; /\n/g' 1>&2
     echo "Setup for ${eldkcc} (using ELDK $rev)" 1>&2
+    if [ -L $root_symlink ]
+    then
+	rm $root_symlink
+	ln -s ${eldk_prefix}${rev}/${eldkcc} $root_symlink
+	echo "Adjusted $root_symlink pointing to $(readlink $root_symlink)" 1>&2
+    fi
 fi
