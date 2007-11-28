@@ -38,6 +38,10 @@ omap5912	OMAP5912
 
 # Board manufacturers
 
+# Amiga
+amigaone-se	PPC750FX
+amigaone-xe-g4	MPC7455
+
 # MicroSys
 pm520		MPC5200
 pm826		MPC8260
@@ -83,7 +87,15 @@ MPC860		ppc_8xx
 MPC885		ppc_8xx
 MPC5200		ppc_6xx
 MPC5121e        ppc_83xx
+MPC7400		ppc_74xx
+MPC7410		ppc_74xx
+MPC7445		ppc_74xx
+MPC7447		ppc_74xx
+MPC7447A	ppc_74xx
 MPC7448		ppc_74xx
+MPC7450		ppc_74xx
+MPC7455		ppc_74xx
+MPC7457		ppc_74xx
 MPC8260		ppc_6xx
 MPC8270		ppc_6xx
 MPC8280		ppc_6xx
@@ -91,6 +103,21 @@ MPC8349		ppc_83xx
 MPC8540		ppc_85xx
 MPC8541		ppc_85xx
 MPC8560		ppc_85xx
+
+# IBM with Motorola
+PPC740		ppc_7xx
+PPC750		ppc_7xx
+PPC755		ppc_7xx
+PPC750CX	ppc_7xx
+PPC750CXe	ppc_7xx
+PPC750FX	ppc_7xx
+PPC750CX	ppc_7xx
+PPC750GL	ppc_7xx
+
+#IBM
+PPC970		ppc64-linux
+PPC970FX	ppc64-linux
+PPC970MP	ppc64-linux
 
 # IDT
 IDTRC32434	mips_4KCle
@@ -107,6 +134,9 @@ OMAP5912	arm-linux
 # =========================
 # :Section alias_to_eldkcc:
 # =========================
+7xx	ppc_6xx
+mpc74xx	ppc_74xx
+74xx	ppc_74xx
 mpc8xx	ppc_8xx
 8xx	ppc_8xx
 mpc82xx	ppc_6xx
