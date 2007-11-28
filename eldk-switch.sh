@@ -11,11 +11,13 @@ eldk_prefix=/opt/eldk-
 rev=4.2
 
 usage () {
-    echo "usage: $(basename $0) [-r <release>] <board, cpu or eldkcc>"	1>&2
-    echo "	Switches to using the ELDK <release> for"		1>&2
-    echo "	<board>, <cpu> or <eldkcc>."				1>&2
-    echo "       $(basename $0) -q"					1>&2
-    echo "	Queries the installed ELDKs"				1>&2
+    echo "usage: $(basename $0) [-v] [-r <release>] <board, cpu or eldkcc>"	1>&2
+    echo "	Switches to using the ELDK <release> for"			1>&2
+    echo "	<board>, <cpu> or <eldkcc>."					1>&2
+    echo "       $(basename $0) -l"						1>&2
+    echo "	Lists the installed ELDKs"					1>&2
+    echo "       $(basename $0) -q"						1>&2
+    echo "	Queries the currently used ELDK"				1>&2
     exit 1
 }
 
@@ -116,14 +118,28 @@ show_versions () {
     done
 }
 
+# Show currently used ELDK
+query_version () {
+    dir=$(echo $PATH | tr : "\n" | grep eldk | head -1 | sed 's/\/bin//; s/\/usr\/bin//')
+    ver=$(eldk_version $dir)
+    echo "Currently using eldk ${ver} from ${dir}"	>&2
+    echo "CROSS_COMPILE=$CROSS_COMPILE"			>&2
+    [ -n "$ARCH" ] && echo "ARCH=$ARCH"			>&2
+}
+
 # Parse options (bash extension)
-while getopts qr: option
+while getopts lqr:v option
 do
     case $option in
-	q)      show_versions
+	l)      show_versions
 	        exit 1
 		;;
+	q)	query_version
+		exit 1
+		;;
 	r)      rev=$OPTARG
+		;;
+	v)	verbose=1
 		;;
 	*)      usage
 		exit 1
@@ -176,7 +192,12 @@ else
     fi
     add_path ${eldk_prefix}${rev}/bin
     add_path ${eldk_prefix}${rev}/usr/bin
-    echo "PATH=$PATH ;"
-    echo "export CROSS_COMPILE=${eldkcc}-"
+    cmds="PATH=$PATH"
+    cmds="$cmds ; export CROSS_COMPILE=${eldkcc}-"
+    if [ $(echo $rev | cut -c 1) -lt 4 ]; then
+	cmds="$cmds ; export DEPMOD=${eldk_prefix}${rev}/usr/bin/depmod.pl"
+    fi
+    echo $cmds
+    [ -n "$verbose" ] && echo $cmds | sed 's/ ; /\n/g' 1>&2
     echo "Setup for ${eldkcc} (using ELDK $rev)" 1>&2
 fi
