@@ -11,10 +11,10 @@ eldk_prefix=/opt/eldk-
 rev=4.2
 
 usage () {
-    echo "usage: `basename $0` [-r <release>] <board, cpu or eldkcc>"	1>&2
+    echo "usage: $(basename $0) [-r <release>] <board, cpu or eldkcc>"	1>&2
     echo "	Switches to using the ELDK <release> for"		1>&2
     echo "	<board>, <cpu> or <eldkcc>."				1>&2
-    echo "       `basename $0` -q"					1>&2
+    echo "       $(basename $0) -q"					1>&2
     echo "	Queries the installed ELDKs"				1>&2
     exit 1
 }
@@ -31,7 +31,7 @@ add_path () {
 prune_path () {
     if echo $PATH | grep -q $1
     then
-	PATH=`echo $PATH | tr : "\n" | grep -v $1 | tr "\n" : | sed 's/:$//'`
+	PATH=$(echo $PATH | tr : "\n" | grep -v $1 | tr "\n" : | sed 's/:$//')
     fi
 }
 
@@ -141,23 +141,23 @@ fi
 # This is our "smart as a collie" lookup logic.  We try to interpret
 # the argument as a board, as a cpu, as an alias and finally only as
 # the ELDK CROSS_COMPILE value.
-cpu=`eldk-map board cpu $1`
+cpu=$(eldk-map board cpu $1)
 if [ -n "$cpu" ]
 then
     echo "[ $1 is using $cpu ]" 1>&2
-    eldkcc=`eldk-map cpu eldkcc $cpu`
+    eldkcc=$(eldk-map cpu eldkcc $cpu)
 else
-    eldkcc=`eldk-map cpu eldkcc $1`
+    eldkcc=$(eldk-map cpu eldkcc $1)
     if [ -z "$eldkcc" ]
     then
-	eldkcc=`eldk-map alias eldkcc $1`
+	eldkcc=$(eldk-map alias eldkcc $1)
 	if [ -z "$eldkcc" ]
 	then
 	    if eldk-map eldkcc | grep -q "^${1}\$"
 	    then
 		eldkcc=$1
 	    else
-		echo "`basename $0`: don't know what $1 might be, giving up."  1>&2
+		echo "$(basename $0): don't know what $1 might be, giving up."  1>&2
 		exit 1
 	    fi
 	fi
@@ -171,7 +171,7 @@ else
     prune_path ${eldk_prefix/%-}
     if [ ! -x ${eldk_prefix}${rev}/usr/bin/${eldkcc}-gcc ]
     then
-	echo "`basename $0`: ELDK $rev for $eldkcc is not installed!" 1>&2
+	echo "$(basename $0): ELDK $rev for $eldkcc is not installed!" 1>&2
 	exit 1
     fi
     add_path ${eldk_prefix}${rev}/bin

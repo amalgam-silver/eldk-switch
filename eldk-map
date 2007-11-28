@@ -1,12 +1,12 @@
 #!/bin/bash
 
-DATA=`dirname $0`/eldk-map.dat
+DATA=$(dirname $0)/eldk-map.dat
 
 usage () {
-    echo "usage: `basename $0` <from> <to> <key>"				1>&2
+    echo "usage: $(basename $0) <from> <to> <key>"				1>&2
     echo "	The table { <from>, <to> } is queried for <from> = <key>"	1>&2
     echo "	where <from> and <to> are fieldnames."				1>&2
-    echo "       `basename $0` <column>"					1>&2
+    echo "       $(basename $0) <column>"					1>&2
     echo "	Lists all possible values for <column> where"			1>&2
     echo "	<column> is a fieldname."					1>&2
     echo "	Valid field names: 'board', 'cpu', 'eldkcc', 'alias'"		1>&2
@@ -59,8 +59,8 @@ then
 	c)	get_section cpu_to_eldkcc | get_col 1 | sort | uniq ;;
 	e)      get_section cpu_to_eldkcc | get_col 2 | sort | uniq ;;
 	v)	
-	    for cpu in `get_section board_to_cpu | get_col 2` ; do
-		if [ -z "`get_section cpu_to_eldkcc | match_first_col $(toupper $cpu)`" ] ; then
+	    for cpu in $(get_section board_to_cpu | get_col 2) ; do
+		if [ -z "$(get_section cpu_to_eldkcc | match_first_col $(toupper $cpu))" ] ; then
 		    echo "Unknown CPU: $cpu" 1>&2
 		fi
 	    done ;;
@@ -80,7 +80,7 @@ then
 	c,b)	get_section board_to_cpu | match_second_col $key ;;
 	e,c)	get_section cpu_to_eldkcc | match_second_col $key ;;
 	e,b)
-	    for cpu in `get_section cpu_to_eldkcc | match_second_col $key` ; do
+	    for cpu in $(get_section cpu_to_eldkcc | match_second_col $key) ; do
 		get_section board_to_cpu | match_second_col $(toupper $cpu)
 	    done ;;
 	*)  echo "$0: unknown lookup operation $from -> $to" 1>&2
