@@ -128,6 +128,15 @@ query_version () {
     [ -n "$ARCH" ] && echo "ARCH=$ARCH"			1>&2
 }
 
+# Check if ARCH setting needs to be changed for eldkcc provided as first parameter
+need_arch_change () {
+    [ -z "$ARCH" ] && return 0
+    if eldk-map e a $1 | sed 's/:/\n/g' | grep -q "^${ARCH}$"; then
+	return 1
+    fi
+    return 0
+}
+
 # Parse options (bash extension)
 while getopts lqr:v option
 do
@@ -167,7 +176,7 @@ else
     eldkcc=$(eldk-map cpu eldkcc $1)
     if [ -z "$eldkcc" ]
     then
-	eldkcc=$(eldk-map alias eldkcc $1)
+	eldkcc=$(eldk-map lias eldkcc $1)
 	if [ -z "$eldkcc" ]
 	then
 	    if eldk-map eldkcc | grep -q "^${1}\$"
@@ -191,14 +200,18 @@ else
 	echo "$(basename $0): ELDK $rev for $eldkcc is not installed!" 1>&2
 	exit 1
     fi
+    echo "Setup for ${eldkcc} (using ELDK $rev)" 1>&2
     add_path ${eldk_prefix}${rev}/bin
     add_path ${eldk_prefix}${rev}/usr/bin
     cmds="PATH=$PATH"
     cmds="$cmds ; export CROSS_COMPILE=${eldkcc}-"
     cmds="$cmds ; export DEPMOD=${eldk_prefix}${rev}/usr/bin/depmod.pl"
+    if need_arch_change $eldkcc
+    then
+	cmds="$cmds ; export ARCH=$(eldk-map e a $eldkcc | sed 's/:.*$//g')"
+    fi
     echo $cmds
     [ -n "$verbose" ] && echo $cmds | sed 's/ ; /\n/g' 1>&2
-    echo "Setup for ${eldkcc} (using ELDK $rev)" 1>&2
     if [ -L $root_symlink ]
     then
 	rm $root_symlink

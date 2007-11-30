@@ -132,6 +132,21 @@ PA6T-1682M	ppc64-linux
 OMAP5912	arm-linux
 
 # =========================
+# :Section eldkcc_to_arch:
+# =========================
+arm-linux	arm
+mips_4KCle	mips
+ppc_4xx		ppc:powerpc
+ppc_4xxFP	ppc:powerpc
+ppc64-linux	powerpc
+ppc_6xx		ppc:powerpc
+ppc_74xx	ppc:powerpc
+ppc_7xx		ppc:powerpc
+ppc_83xx	ppc:powerpc
+ppc_85xx	ppc:powerpc
+ppc_8xx		ppc:powerpc
+
+# =========================
 # :Section alias_to_eldkcc:
 # =========================
 7xx	ppc_6xx
