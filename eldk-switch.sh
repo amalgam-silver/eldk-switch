@@ -195,9 +195,7 @@ else
     add_path ${eldk_prefix}${rev}/usr/bin
     cmds="PATH=$PATH"
     cmds="$cmds ; export CROSS_COMPILE=${eldkcc}-"
-    if [ $(echo $rev | cut -c 1) -lt 4 ]; then
-	cmds="$cmds ; export DEPMOD=${eldk_prefix}${rev}/usr/bin/depmod.pl"
-    fi
+    cmds="$cmds ; export DEPMOD=${eldk_prefix}${rev}/usr/bin/depmod.pl"
     echo $cmds
     [ -n "$verbose" ] && echo $cmds | sed 's/ ; /\n/g' 1>&2
     echo "Setup for ${eldkcc} (using ELDK $rev)" 1>&2
