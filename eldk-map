@@ -36,12 +36,12 @@ get_section () {
 
 # Match first column
 match_first_col () {
-    sed -n '/^'"$1"'/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p }'
+    sed -n '/^'"$1"'\>/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p }'
 }
 
 # Match second column
 match_second_col () {
-    sed -n '/'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }'
+    sed -n '/\<'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }'
 }
 
 # Get column
