@@ -80,6 +80,19 @@ then
     to=$(tolower $2)
     key=$(toupper $3)
 
+    # Verify parameter
+    case "${from:0:1}" in
+	l)	[ -z "$(get_section alias_to_eldkcc | match_first_col $key)" ] && \
+		( echo "unknown alias '$key'" 1>&2 ; exit 1 ) ;;
+	b)	[ -z "$(get_section board_to_cpu | match_first_col $key)" ] && \
+		(echo "unknown board '$key'" 1>&2 ; exit 1 ) ;;
+	c)	[ -z "$(get_section cpu_to_eldkcc | match_first_col $key)" ] && \
+		(echo "unknown cpu '$key'" 1>&2 ; exit 1 ) ;;
+	e)	[ -z "$(get_section alias_to_eldkcc | match_second_col $key)" ] && \
+		(echo "unknown eldkcc '$key'" 1>&2 ; exit 1 );;
+    esac
+
+    # Do the lookup
     case "${from:0:1},${to:0:1}" in
 	l,e)    get_section alias_to_eldkcc | match_first_col $key ;;
 	b,c)	get_section board_to_cpu | match_first_col $key ;;
@@ -90,7 +103,7 @@ then
 		    get_section board_to_cpu | match_second_col $(toupper $cpu)
 		done ;;
 	e,c)	get_section cpu_to_eldkcc | match_second_col $key ;;
-	*)	echo "$0: unknown lookup operation $from -> $to" 1>&2
+	*)	echo "unknown lookup operation $from -> $to" 1>&2
 		exit 1 ;;
     esac
 else

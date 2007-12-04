@@ -167,16 +167,16 @@ fi
 # This is our "smart as a collie" lookup logic.  We try to interpret
 # the argument as a board, as a cpu, as an alias and finally only as
 # the ELDK CROSS_COMPILE value.
-cpu=$(eldk-map board cpu $1)
+cpu=$(eldk-map board cpu $1 2>/dev/null)
 if [ -n "$cpu" ]
 then
     echo "[ $1 is using $cpu ]" 1>&2
-    eldkcc=$(eldk-map cpu eldkcc $cpu)
+    eldkcc=$(eldk-map cpu eldkcc $cpu 2>/dev/null)
 else
-    eldkcc=$(eldk-map cpu eldkcc $1)
+    eldkcc=$(eldk-map cpu eldkcc $1 2>/dev/null)
     if [ -z "$eldkcc" ]
     then
-	eldkcc=$(eldk-map lias eldkcc $1)
+	eldkcc=$(eldk-map lias eldkcc $1 2>/dev/null)
 	if [ -z "$eldkcc" ]
 	then
 	    if eldk-map eldkcc | grep -q "^${1}\$"
