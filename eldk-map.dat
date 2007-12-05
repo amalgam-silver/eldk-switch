@@ -6,7 +6,9 @@
 acadia		PPC405EZ
 bamboo		PPC440EP
 bubinga		PPC405EP
+canyonlands	PPC460EX
 ebony		PPC440GP
+glacier		PPC460GT
 haleakala	PPC405EXr
 katmai		PPC440SPe
 katmai2		PPC440SPe
@@ -42,6 +44,9 @@ omap5912	OMAP5912
 amigaone-se	PPC750FX
 amigaone-xe-g4	MPC7455
 
+# Dave
+ppchameleon	PPC405EP
+ 
 # MicroSys
 pm520		MPC5200
 pm826		MPC8260
@@ -77,6 +82,8 @@ PPC440GRx	ppc_4xx
 PPC440GX	ppc_4xx
 PPC440SP	ppc_4xx
 PPC440SPe	ppc_4xx
+PPC460EX	ppc_4xxFP
+PPC460GT	ppc_4xx
 
 # Atmel
 AT91RM9200	arm-linux
