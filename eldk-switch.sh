@@ -121,11 +121,15 @@ show_versions () {
 
 # Show currently used ELDK
 query_version () {
-    dir=$(echo $PATH | tr : "\n" | grep eldk | head -1 | sed 's/\/bin//; s/\/usr\/bin//')
+    dir=$(echo $PATH | tr : "\n" | grep ${eldk_prefix/%-} | head -1 | sed 's/\/bin//; s/\/usr\/bin//')
     ver=$(eldk_version $dir)
-    echo "Currently using eldk ${ver} from ${dir}"	1>&2
-    echo "CROSS_COMPILE=$CROSS_COMPILE"			1>&2
-    [ -n "$ARCH" ] && echo "ARCH=$ARCH"			1>&2
+    if [ -n "$dir" ]; then
+	echo "Currently using eldk ${ver} from ${dir}"	1>&2
+	echo "CROSS_COMPILE=$CROSS_COMPILE"			1>&2
+	[ -n "$ARCH" ] && echo "ARCH=$ARCH"			1>&2
+    else
+	echo "Environment is not setup to use an ELDK." 1>&2
+    fi
 }
 
 # Check if ARCH setting needs to be changed for eldkcc provided as first parameter
