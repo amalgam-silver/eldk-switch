@@ -88,7 +88,7 @@ then
 		(echo "unknown board '$key'" 1>&2 ; exit 1 ) ;;
 	c)	[ -z "$(get_section cpu_to_eldkcc | match_first_col $key)" ] && \
 		(echo "unknown cpu '$key'" 1>&2 ; exit 1 ) ;;
-	e)	[ -z "$(get_section alias_to_eldkcc | match_second_col $key)" ] && \
+	e)	[ -z "$(get_section cpu_to_eldkcc | match_second_col $key)" ] && \
 		(echo "unknown eldkcc '$key'" 1>&2 ; exit 1 );;
     esac
 
