@@ -4,10 +4,12 @@
 
 # AMCC Eval boards
 acadia		PPC405EZ
+arches		PPC460GT
 bamboo		PPC440EP
 bubinga		PPC405EP
 canyonlands	PPC460EX
 ebony		PPC440GP
+eiger		PPC460SX
 glacier		PPC460GT
 haleakala	PPC405EXr
 katmai		PPC440SPe
@@ -47,6 +49,9 @@ amigaone-xe-g4	MPC7455
 # Dave
 ppchameleon	PPC405EP
  
+# Digi
+unc90		AT91RM9200
+
 # MicroSys
 pm520		MPC5200
 pm826		MPC8260
@@ -61,6 +66,9 @@ tqm885d		MPC885
 tqm5200		MPC5200
 tqm8349		MPC8349
 tqm8540		MPC8540
+tqm8541		MPC8541
+tqm8548		MPC8548
+tqm8555		MPC8555
 tqm8560		MPC8560
 
 # =======================
@@ -84,6 +92,7 @@ PPC440SP	ppc_4xx
 PPC440SPe	ppc_4xx
 PPC460EX	ppc_4xxFP
 PPC460GT	ppc_4xx
+PPC460SX	ppc_4xx
 
 # Atmel
 AT91RM9200	arm-linux
@@ -109,6 +118,8 @@ MPC8280		ppc_6xx
 MPC8349		ppc_83xx
 MPC8540		ppc_85xx
 MPC8541		ppc_85xx
+MPC8548		ppc_85xx
+MPC8555		ppc_85xx
 MPC8560		ppc_85xx
 
 # IBM with Motorola
