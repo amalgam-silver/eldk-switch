@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DATA=$(dirname $0)/eldk-map.dat
+DATALOCAL=$(dirname $0)/eldk-map-local.dat
 
 usage () {
     echo "usage: $(basename $0) <from> <to> <key>"				1>&2
@@ -30,9 +31,10 @@ tolower () {
 }
 
 # "Database" accessor functions
-# Get a section from our datafile
+# Get a section from our datafiles
 get_section () {
-    sed -n '/:section '$1':/I,/:section/I {s/#.*//; /^$/d; p}' < $DATA
+    (if [ -f $DATALOCAL ]; then cat $DATALOCAL $DATA ; else cat $DATA; fi ) | \
+	sed -n '/:section '$1':/I,/:section/I {s/#.*//; /^$/d; p}'
 }
 
 # Match first column
