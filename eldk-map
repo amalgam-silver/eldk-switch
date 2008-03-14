@@ -17,6 +17,7 @@ usage () {
     echo "	eldk-map e b ppc_8xx    - show all boards using ppc_8xx-"	1>&2
     echo "	  as CROSS_COMPILE."						1>&2
     echo "	eldk-map c              - show all known CPUs"			1>&2
+    echo "	eldk-map v              - verify integrity of database"		1>&2
     exit 1
 }
 
