@@ -4,7 +4,7 @@
 # e.g. put "eldk-switch() { eval `eldk-switch.sh $*`; }"
 # in your .bashrc
 #
-# (C) by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
+# (C) 2007-2008 by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
 #
 
 eldk_prefix=/opt/eldk-

@@ -1,4 +1,21 @@
 #!/bin/bash
+#
+# Backend to query the eldk-map.dat database containing data needed by eldk-switch.
+#
+# The data file(s) contain these two-column tables:
+#  board_to_cpu    : maps board names to the cpu it uses
+#  cpu_to_eldkcc   : maps cpu names to ELDK CROSS_COMPILE settings
+#  eldkcc_to_arch  : maps cpu names to possible ARCH settings
+#  alias_to_eldkcc : maps alias names to ELDK CROSS_COMPILE settings
+#
+# The data files(s) are plain text files.  Everything in a line after
+# a '#' is considered to be a comment.  Tables begin with special
+# lines of the form ':Section <section_name>:'.  Everything following
+# such a line up to the next sectino or eof belongs to that table.  A
+# single table can be split onto multiple parts of the files,
+# effectively allowing for easy handling of 'eldk-map-local.dat'.
+#
+# (C) 2007-2008 by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
 
 DATA=$(dirname $0)/eldk-map.dat
 DATALOCAL=$(dirname $0)/eldk-map-local.dat
