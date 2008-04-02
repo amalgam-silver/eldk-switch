@@ -1,6 +1,4 @@
-# ======================
-# :Section board_to_cpu:
-# ======================
+[board_to_cpu]
 
 # AMCC Eval boards
 acadia		PPC405EZ
@@ -71,9 +69,8 @@ tqm8548		MPC8548
 tqm8555		MPC8555
 tqm8560		MPC8560
 
-# =======================
-# :Section cpu_to_eldkcc:
-# =======================
+
+[cpu_to_eldkcc]
 
 # AMCC
 PPC405EP	ppc_4xx
@@ -112,6 +109,7 @@ MPC7448		ppc_74xx
 MPC7450		ppc_74xx
 MPC7455		ppc_74xx
 MPC7457		ppc_74xx
+MPC8247		ppc_6xx
 MPC8260		ppc_6xx
 MPC8270		ppc_6xx
 MPC8280		ppc_6xx
@@ -149,9 +147,7 @@ PA6T-1682M	ppc64-linux
 # TI
 OMAP5912	arm-linux
 
-# =========================
-# :Section eldkcc_to_arch:
-# =========================
+[eldkcc_to_arch]
 arm-linux	arm
 mips_4KCle	mips
 ppc_4xx		ppc:powerpc
@@ -164,9 +160,7 @@ ppc_83xx	ppc:powerpc
 ppc_85xx	ppc:powerpc
 ppc_8xx		ppc:powerpc
 
-# =========================
-# :Section alias_to_eldkcc:
-# =========================
+[alias_to_eldkcc]
 7xx	ppc_6xx
 mpc74xx	ppc_74xx
 74xx	ppc_74xx
