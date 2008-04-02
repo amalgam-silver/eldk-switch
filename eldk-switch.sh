@@ -105,7 +105,7 @@ show_versions () {
     local ver
 
     echo ",+--- Installed ELDK versions:" 1>&2
-    for dir in ${eldk_prefix}*
+    for dir in ${eldk_prefix/%-}*
     do
 	ver=$(eldk_version $dir)
 	if [ ! -L $dir ]; then
