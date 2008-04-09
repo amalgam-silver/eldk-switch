@@ -29,6 +29,7 @@ yucca		PPC440SPe
 yucca_a		PPC440SPe
 
 # Freescale
+lite5200	MPC5200
 lite5200b	MPC5200
 mpc5121		MPC5121e
 
@@ -49,6 +50,9 @@ ppchameleon	PPC405EP
  
 # Digi
 unc90		AT91RM9200
+
+# Infineon
+incaip		INCAIP
 
 # MicroSys
 pm520		MPC5200
