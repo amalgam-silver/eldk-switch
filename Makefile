@@ -19,15 +19,19 @@ data-extra  = eldk-map-local.dat
 install:
 	$(INSTALL) -d $(BINDIR)
 	$(INSTALL) $(bin) $(BINDIR)
-	TMPFILE=/tmp/eldk-install-tmp.$$$$; \
-	for to_patch in $(bin-patch); do \
-	    sed "s|^DATADIR=.*\$$|DATADIR=$(DATADIR)|" < $$to_patch > $$TMPFILE; \
-	    $(INSTALL) $$TMPFILE $(BINDIR)/$$to_patch; \
-	done; \
+	TMPFILE=/tmp/eldk-install-tmp.$$$$;					\
+	for to_patch in $(bin-patch); do					\
+	    sed "s|^DATADIR=.*\$$|DATADIR=$(DATADIR)|" < $$to_patch > $$TMPFILE;\
+	    $(INSTALL) $$TMPFILE $(BINDIR)/$$to_patch;				\
+	done;									\
 	rm $$TMPFILE
 	$(INSTALL) -d $(DATADIR)
 	$(INSTALL) -m644 $(data) $(DATADIR)
-	[ -f "$(data-extra)" ] && $(INSTALL) -m644 $(data-extra) $(DATADIR)
+	if [ -r $(data-extra) ]; then						\
+	    $(INSTALL) -m644 $(data-extra) $(DATADIR) ;				\
+	else									\
+	    true;								\
+	fi
 
 clean:
 	rm -f *~
