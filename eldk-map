@@ -10,16 +10,20 @@
 #
 # The data files(s) are plain text files.  Everything in a line after
 # a '#' is considered to be a comment.  Tables begin with special
-# lines of the form '[<section_name>]'.  Everything following
-# such a line up to the next section or eof belongs to that table.  A
-# single table can be split onto multiple parts of the files,
-# effectively allowing for easy handling of 'eldk-map-local.dat'.
+# lines of the form '[<section_name>]'.  Everything following such a
+# line up to the next section or eof belongs to that table.
+#
+# If a file contains multiple sections with the same name only the
+# first one will be used.
+#
+# In order to allow easy overriding of the distributed settings, these
+# data files are considerd in order: ~/.eldk-map.dat, eldk-map.dat and
+# eldk-map-local.dat.  The latter two are to be found in $DATADIR.
 #
 # (C) 2007-2008 by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
 
 DATADIR=/usr/local/share/eldk
-DATA=${DATADIR}/eldk-map.dat
-DATALOCAL=${DATADIR}/eldk-map-local.dat
+DATAFILES="$HOME/.eldk-map.dat ${DATADIR}/eldk-map.dat ${DATADIR}/eldk-map-local.dat"
 
 usage () {
     echo "usage: $(basename $0) <from> <to> <key>"				1>&2
@@ -57,11 +61,9 @@ get_section_file () {
 
 # Get a section from our datafiles
 get_section () {
-    if [ -r $DATALOCAL ]; then
-	cat <(get_section_file $1 $DATALOCAL) <(get_section_file $1 $DATA)
-    else
-	get_section_file $1 $DATA
-    fi
+    for file in $DATAFILES; do
+	get_section_file $1 $file
+    done
 }
 
 # Match first column
@@ -90,16 +92,20 @@ then
 	e)      get_section cpu_to_eldkcc | get_col 2 | sort | uniq ;;
 	l)	get_section alias_to_eldkcc | get_col 1 | sort | uniq ;;
 	v)	echo "Verifying board -> cpu -> eldk_cc chains" 1>&2
-		for cpu in $(get_section board_to_cpu | get_col 2) ; do
-		    if [ -z "$(get_section cpu_to_eldkcc | match_first_col $(toupper $cpu))" ] ; then
-			echo "Unknown CPU: $cpu" 1>&2
-		    fi
+		for file in $DATAFILES; do
+		    for cpu in $(get_section_file board_to_cpu $file | get_col 2) ; do
+			if [ -z "$(get_section cpu_to_eldkcc | match_first_col $(toupper $cpu))" ] ; then
+			    echo "$file: unknown CPU $cpu" 1>&2
+			fi
+		    done
 		done
 		echo "Verifying cpu -> eldk_cc -> arch chains" 1>&2
-		for eldkcc in $(get_section cpu_to_eldkcc | get_col 2) ; do
-		    if [ -z "$(get_section eldkcc_to_arch | match_first_col $(toupper $eldkcc))" ] ; then
-			echo "$eldkcc doesn't map to an arch value" 1>&2
-		    fi
+		for file in $DATAFILES; do
+		    for eldkcc in $(get_section_file cpu_to_eldkcc $file | get_col 2) ; do
+			if [ -z "$(get_section eldkcc_to_arch | match_first_col $(toupper $eldkcc))" ] ; then
+			    echo "$file: $eldkcc doesn't map to an arch value" 1>&2
+			fi
+		    done
 		done ;;
 	*)	echo "$0: unknown column $1" 1>&2 ; exit 1 ;;
     esac
@@ -124,11 +130,11 @@ then
 
     # Do the lookup
     case "${from:0:1},${to:0:1}" in
-	l,e)    get_section alias_to_eldkcc | match_first_col $key ;;
-	b,c)	get_section board_to_cpu | match_first_col $key ;;
-	c,e)	get_section cpu_to_eldkcc | match_first_col $key ;;
+	l,e)    get_section alias_to_eldkcc | match_first_col $key | head -1 ;;
+	b,c)	get_section board_to_cpu | match_first_col $key | head -1 ;;
+	c,e)	get_section cpu_to_eldkcc | match_first_col $key | head -1 ;;
 	c,b)	get_section board_to_cpu | match_second_col $key ;;
-	e,a)	get_section eldkcc_to_arch | match_first_col $key ;;
+	e,a)	get_section eldkcc_to_arch | match_first_col $key | head -1 ;;
 	e,b)	for cpu in $(get_section cpu_to_eldkcc | match_second_col $key) ; do
 		    get_section board_to_cpu | match_second_col $(toupper $cpu)
 		done ;;
