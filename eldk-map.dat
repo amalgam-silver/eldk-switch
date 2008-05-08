@@ -166,6 +166,7 @@ ppc_85xx	ppc:powerpc
 ppc_8xx		ppc:powerpc
 
 [alias_to_eldkcc]
+arm	arm-linux
 7xx	ppc_6xx
 mpc74xx	ppc_74xx
 74xx	ppc_74xx
@@ -179,3 +180,5 @@ mpc85xx	ppc_85xx
 85xx	ppc_85xx
 4xx	ppc_4xx
 4xxFP	ppc_4xxFP
+mipsel	mips_4KCle
+mips	mips_4KC
