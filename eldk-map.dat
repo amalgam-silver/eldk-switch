@@ -154,6 +154,7 @@ OMAP5912	arm-linux
 
 [eldkcc_to_arch]
 arm-linux	arm
+mips_4KC	mips
 mips_4KCle	mips
 ppc_4xx		powerpc:ppc
 ppc_4xxFP	powerpc:ppc
