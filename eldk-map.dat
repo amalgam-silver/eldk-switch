@@ -32,6 +32,7 @@ yucca_a		PPC440SPe
 lite5200	MPC5200
 lite5200b	MPC5200
 mpc5121		MPC5121e
+imx31		IMX31
 
 # PA-Semi
 electra		PA6T-1682M
@@ -61,6 +62,9 @@ pm826		MPC8260
 pm827		MPC8270
 pm828		MPC8280
 pm854		MPC8540
+
+# Phytec
+imx31_phycore	IMX31
 
 # TQ-Systems
 tqm8xxl		MPC823
@@ -104,7 +108,7 @@ MPC823		ppc_8xx
 MPC860		ppc_8xx
 MPC885		ppc_8xx
 MPC5200		ppc_6xx
-MPC5121e        ppc_83xx
+MPC5121e        ppc_6xx
 MPC7400		ppc_74xx
 MPC7410		ppc_74xx
 MPC7445		ppc_74xx
@@ -118,12 +122,14 @@ MPC8247		ppc_6xx
 MPC8260		ppc_6xx
 MPC8270		ppc_6xx
 MPC8280		ppc_6xx
-MPC8349		ppc_83xx
+MPC8349		ppc_6xx
 MPC8540		ppc_85xx
 MPC8541		ppc_85xx
-MPC8548		ppc_85xx
+MPC8544		ppc_85xxDP
+MPC8548		ppc_85xxDP
 MPC8555		ppc_85xx
 MPC8560		ppc_85xx
+IMX31		arm-linux
 
 # IBM with Motorola
 PPC740		ppc_7xx
@@ -149,6 +155,9 @@ INCAIP		mips_4KCle
 # PA-Semi
 PA6T-1682M	ppc64-linux
 
+# Samsung
+S3C2410		arm-linux
+
 # TI
 OMAP5912	arm-linux
 
@@ -162,8 +171,8 @@ ppc64-linux	powerpc
 ppc_6xx		powerpc:ppc
 ppc_74xx	powerpc:ppc
 ppc_7xx		powerpc:ppc
-ppc_83xx	powerpc:ppc
 ppc_85xx	powerpc:ppc
+ppc_85xxDP	powerpc:ppc
 ppc_8xx		powerpc:ppc
 
 [alias_to_eldkcc]
@@ -175,8 +184,8 @@ mpc8xx	ppc_8xx
 8xx	ppc_8xx
 mpc82xx	ppc_6xx
 82xx	ppc_6xx
-mpc83xx	ppc_83xx
-83xx	ppc_83xx
+mpc83xx	ppc_6xx
+83xx	ppc_6xx
 mpc85xx	ppc_85xx
 85xx	ppc_85xx
 4xx	ppc_4xx
