@@ -71,6 +71,7 @@ tqm8xxl		MPC823
 tqm860		MPC860
 tqm885d		MPC885
 tqm5200		MPC5200
+tqm8260		MPC8260
 tqm8349		MPC8349
 tqm8540		MPC8540
 tqm8541		MPC8541
@@ -190,5 +191,6 @@ mpc85xx	ppc_85xx
 85xx	ppc_85xx
 4xx	ppc_4xx
 4xxFP	ppc_4xxFP
+mipsle	mips_4KCle
 mipsel	mips_4KCle
 mips	mips_4KC
