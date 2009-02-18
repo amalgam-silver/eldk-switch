@@ -31,11 +31,14 @@ yucca_a		PPC440SPe
 # Freescale
 lite5200	MPC5200
 lite5200b	MPC5200
-mpc5121		MPC5121e
+ads5121		MPC5121e
 imx31		IMX31
 
 # PA-Semi
 electra		PA6T-1682M
+
+# Samsung
+smdk6400	S3C6400
 
 # Texas Instruments
 omap5912	OMAP5912
@@ -50,6 +53,9 @@ amigaone-xe-g4	MPC7455
 # Dave
 ppchameleon	PPC405EP
  
+# Dave/Denx
+qong		IMX31
+
 # Digi
 unc90		AT91RM9200
 
@@ -105,11 +111,16 @@ PPC460SX	ppc_4xx
 AT91RM9200	arm-linux
 
 # Freescale
+IMX31		armVFP-linux
 MPC823		ppc_8xx
+MPC852		ppc_8xx
 MPC860		ppc_8xx
 MPC885		ppc_8xx
 MPC5200		ppc_6xx
+MPC5121		ppc_6xx
 MPC5121e        ppc_6xx
+MPC5123		ppc_6xx
+MPC5125		ppc_6xx
 MPC7400		ppc_74xx
 MPC7410		ppc_74xx
 MPC7445		ppc_74xx
@@ -124,13 +135,13 @@ MPC8260		ppc_6xx
 MPC8270		ppc_6xx
 MPC8280		ppc_6xx
 MPC8349		ppc_6xx
+MPC8360		ppc_6xx
 MPC8540		ppc_85xx
 MPC8541		ppc_85xx
 MPC8544		ppc_85xxDP
 MPC8548		ppc_85xxDP
 MPC8555		ppc_85xx
 MPC8560		ppc_85xx
-IMX31		arm-linux
 
 # IBM with Motorola
 PPC740		ppc_7xx
@@ -158,12 +169,15 @@ PA6T-1682M	ppc64-linux
 
 # Samsung
 S3C2410		arm-linux
+S3C2440		arm-linux
+S3C6400		armVFP-linux
 
 # TI
 OMAP5912	arm-linux
 
 [eldkcc_to_arch]
 arm-linux	arm
+armVFP-linux	arm
 mips_4KC	mips
 mips_4KCle	mips
 ppc_4xx		powerpc:ppc
@@ -178,6 +192,7 @@ ppc_8xx		powerpc:ppc
 
 [alias_to_eldkcc]
 arm	arm-linux
+armVFP	armVFP-linux
 7xx	ppc_6xx
 mpc74xx	ppc_74xx
 74xx	ppc_74xx
