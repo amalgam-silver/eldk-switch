@@ -41,6 +41,7 @@ electra		PA6T-1682M
 smdk6400	S3C6400
 
 # Texas Instruments
+beagle		OMAP3
 omap5912	OMAP5912
 
 
@@ -54,6 +55,7 @@ amigaone-xe-g4	MPC7455
 ppchameleon	PPC405EP
  
 # Dave/Denx
+aria		MPC5121e
 qong		IMX31
 
 # Digi
@@ -61,6 +63,9 @@ unc90		AT91RM9200
 
 # Infineon
 incaip		INCAIP
+
+# Micronas
+vcth		VCTH
 
 # MicroSys
 pm520		MPC5200
@@ -118,7 +123,7 @@ MPC860		ppc_8xx
 MPC885		ppc_8xx
 MPC5200		ppc_6xx
 MPC5121		ppc_6xx
-MPC5121e        ppc_6xx
+MPC5121e	ppc_6xx
 MPC5123		ppc_6xx
 MPC5125		ppc_6xx
 MPC7400		ppc_74xx
@@ -164,6 +169,10 @@ IDTRC32434	mips_4KCle
 # Infineon
 INCAIP		mips_4KCle
 
+# Micronas
+# This is really a 24k core...
+VCTH		mips_4KCle
+
 # PA-Semi
 PA6T-1682M	ppc64-linux
 
@@ -174,6 +183,7 @@ S3C6400		armVFP-linux
 
 # TI
 OMAP5912	arm-linux
+OMAP3		armVFP-linux
 
 [eldkcc_to_arch]
 arm-linux	arm
@@ -191,21 +201,29 @@ ppc_85xxDP	powerpc:ppc
 ppc_8xx		powerpc:ppc
 
 [alias_to_eldkcc]
-arm	arm-linux
-armVFP	armVFP-linux
-7xx	ppc_6xx
-mpc74xx	ppc_74xx
-74xx	ppc_74xx
-mpc8xx	ppc_8xx
-8xx	ppc_8xx
-mpc82xx	ppc_6xx
-82xx	ppc_6xx
-mpc83xx	ppc_6xx
-83xx	ppc_6xx
-mpc85xx	ppc_85xx
-85xx	ppc_85xx
-4xx	ppc_4xx
-4xxFP	ppc_4xxFP
-mipsle	mips_4KCle
-mipsel	mips_4KCle
-mips	mips_4KC
+arm		arm-linux
+armVFP		armVFP-linux
+6xx		ppc_6xx
+7xx		ppc_6xx
+ppc_6xx		ppc_6xx
+74xx		ppc_74xx
+mpc74xx		ppc_74xx
+8xx		ppc_8xx
+mpc8xx		ppc_8xx
+ppc_8xx		ppc_8xx
+82xx		ppc_6xx
+mpc82xx		ppc_6xx
+83xx		ppc_6xx
+mpc83xx		ppc_6xx
+85xx		ppc_85xx
+mpc85xx		ppc_85xx
+ppc_85xx	ppc_85xx
+85xxDP		ppc_85xxDP
+ppc_85xxDP	ppc_85xxDP
+4xx		ppc_4xx
+ppc_4xx		ppc_4xx
+4xxFP		ppc_4xxFP
+ppc_4xxFP	ppc_4xxFP
+mipsle		mips_4KCle
+mipsel		mips_4KCle
+mips		mips_4KC
