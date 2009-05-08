@@ -135,7 +135,7 @@ query_version () {
 # Check if ARCH setting needs to be changed for eldkcc provided as first parameter
 need_arch_change () {
     [ -z "$ARCH" ] && return 0
-    if eldk-map e a $1 | sed 's/:/\n/g' | grep -q "^${ARCH}$"; then
+    if eldk-map eldkcc arch $1 | sed 's/:/\n/g' | grep -q "^${ARCH}$"; then
 	return 1
     fi
     return 0
@@ -180,7 +180,7 @@ else
     eldkcc=$(eldk-map cpu eldkcc $1 2>/dev/null)
     if [ -z "$eldkcc" ]
     then
-	eldkcc=$(eldk-map lias eldkcc $1 2>/dev/null)
+	eldkcc=$(eldk-map alias eldkcc $1 2>/dev/null)
 	if [ -z "$eldkcc" ]
 	then
 	    if eldk-map eldkcc | grep -q "^${1}\$"
@@ -212,7 +212,7 @@ else
     cmds="$cmds ; export DEPMOD=${eldk_prefix}${rev}/usr/bin/depmod.pl"
     if need_arch_change $eldkcc
     then
-	cmds="$cmds ; export ARCH=$(eldk-map e a $eldkcc | sed 's/:.*$//g')"
+	cmds="$cmds ; export ARCH=$(eldk-map eldkcc arch $eldkcc | sed 's/:.*$//g')"
     fi
     echo $cmds
     [ -n "$verbose" ] && echo $cmds | sed 's/ ; /\n/g' 1>&2

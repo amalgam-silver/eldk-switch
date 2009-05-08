@@ -32,8 +32,9 @@ usage () {
     echo "       $(basename $0) <column>"					1>&2
     echo "	Lists all possible values for <column> where"			1>&2
     echo "	<column> is a fieldname."					1>&2
-    echo "	Valid field names: 'board', 'cpu', 'eldkcc', 'arch', '(a)lias'"	1>&2
-    echo "	(can be abbreviated as 'b', 'c', 'e', 'a', 'l')"		1>&2
+    echo "	Valid field names: 'board', 'cpu', 'eldkcc', 'arch', 'alias'"	1>&2
+    echo "                         'uboot_config', 'linux_config'"		1>&2
+    echo "	(can be abbreviated by shortest unique substring)"		1>&2
     echo ""									1>&2
     echo "	Examples:"							1>&2
     echo "	eldk-map c b ppc440epx  - show all boards using 440EPx"		1>&2
@@ -52,6 +53,34 @@ tolower () {
     echo $1 | tr 'A-Z' 'a-z'
 }
 
+# Canonicalize field names here into one letter
+canon_field () {
+    f=$(tolower $1)
+    [ "${f:0:1}" = "b" ] && { echo "b" ; return; }
+    [ "${f:0:1}" = "c" ] && { echo "c" ; return; }
+    [ "${f:0:1}" = "e" ] && { echo "e" ; return; }
+    [ "${f:0:2}" = "ar" ] && { echo "a" ; return; }
+    [ "${f:0:2}" = "al" ] && { echo "l" ; return; }
+    [ "${f:0:1}" = "u" ] && { echo "U" ; return; }
+    [ "${f:0:1}" = "l" ] && { echo "L" ; return; }
+    [ "${f:0:1}" = "v" ] && { echo "v" ; return; }
+    echo "$0: unknown column $1" 1>&2
+    exit 1
+}
+
+uncanon_field () {
+    f=$(tolower $1)
+    [ "$f" = "b" ] && { echo "board" ; return; }
+    [ "$f" = "c" ] && { echo "cpu" ; return; }
+    [ "$f" = "e" ] && { echo "eldkcc" ; return; }
+    [ "$f" = "a" ] && { echo "arch" ; return; }
+    [ "$f" = "l" ] && { echo "alias" ; return; }
+    [ "$f" = "U" ] && { echo "uboot_config" ; return; }
+    [ "$f" = "L" ] && { echo "linux_config" ; return; }
+    echo "$0: unknown column $1" 1>&2
+    exit 1
+}
+
 # "Database" accessor functions
 # Get a section from a single datafile
 get_section_file () {
@@ -68,29 +97,39 @@ get_section () {
 
 # Match first column
 match_first_col () {
-    sed -n '/^'"$1"'\>/I { s/^.*[ \t]\+\(.\+\)$/\1/ ; p }'
+    sed -n '/^'"$1"'\>/I { s/^.*[\t]\+\(.\+\)$/\1/ ; p }'
 }
 
 # Match second column
 match_second_col () {
-    sed -n '/\<'"$1"'$/I { s/^\(.\+\)[ \t]\+.*$/\1/ ; p }'
+    sed -n '/\<'"$1"'$/I { s/^\(.\+\)[\t]\+.*$/\1/ ; p }'
 }
 
 # Get column
 get_col () {
-    sed 's/^\(.\+\)[ \t]\+\(.\+\)$/\'"$1"'/'
+    sed 's/^\(.\+\)[\t]\+\(.\+\)$/\'"$1"'/'
+}
+
+default_to () {
+    if [ -z "$1" ]; then
+	echo $2
+    else
+	echo $1
+    fi
 }
 
 if [ $# -eq 1 ]
 then
     # Lookup all values
-    column=$(tolower $1)
-    case ${column:0:1} in
+    column=$(canon_field $1)
+    case ${column} in
 	a)	get_section eldkcc_to_arch | get_col 2 | sort | uniq ;;
 	b)      get_section board_to_cpu | get_col 1 | sort | uniq ;;
 	c)	get_section cpu_to_eldkcc | get_col 1 | sort | uniq ;;
 	e)      get_section eldkcc_to_arch | get_col 1 | sort | uniq ;;
 	l)	get_section alias_to_eldkcc | get_col 1 | sort | uniq ;;
+	U)	get_section board_to_uboot_config | get_col 1 | sort | uniq ;;
+	L)	get_section board_to_linux_config | get_col 1 | sort | uniq ;;
 	v)	echo "Verifying board -> cpu -> eldk_cc chains" 1>&2
 		for file in $DATAFILES; do
 		    for cpu in $(get_section_file board_to_cpu $file | get_col 2) ; do
@@ -107,17 +146,16 @@ then
 			fi
 		    done
 		done ;;
-	*)	echo "$0: unknown column $1" 1>&2 ; exit 1 ;;
     esac
 elif [ $# -eq 3 ]
 then
     # Map a $key through a table
-    from=$(tolower $1)
-    to=$(tolower $2)
+    from=$(canon_field $1)
+    to=$(canon_field $2)
     key=$(toupper $3)
 
     # Verify parameter
-    case "${from:0:1}" in
+    case "${from}" in
 	l)	[ -z "$(get_section alias_to_eldkcc | match_first_col $key)" ] && \
 		( echo "unknown alias '$key'" 1>&2 ; exit 1 ) ;;
 	b)	[ -z "$(get_section board_to_cpu | match_first_col $key)" ] && \
@@ -129,9 +167,11 @@ then
     esac
 
     # Do the lookup
-    case "${from:0:1},${to:0:1}" in
+    case "${from},${to}" in
 	l,e)    get_section alias_to_eldkcc | match_first_col $key | head -1 ;;
 	b,c)	get_section board_to_cpu | match_first_col $key | head -1 ;;
+	b,U)	default_to $(get_section board_to_uboot_config | match_first_col $key | head -1 2>/dev/null) $3 ;;
+	b,L)	default_to $(get_section board_to_linux_config | match_first_col $key | head -1 2>/dev/null) $3 ;;
 	c,e)	get_section cpu_to_eldkcc | match_first_col $key | head -1 ;;
 	c,b)	get_section board_to_cpu | match_second_col $key ;;
 	e,a)	get_section eldkcc_to_arch | match_first_col $key | head -1 ;;
@@ -139,7 +179,7 @@ then
 		    get_section board_to_cpu | match_second_col $(toupper $cpu)
 		done ;;
 	e,c)	get_section cpu_to_eldkcc | match_second_col $key ;;
-	*)	echo "unknown lookup operation $from -> $to" 1>&2
+	*)	echo "unknown lookup operation $(uncanon_field $from) -> $(uncanon_field $to)" 1>&2
 		exit 1 ;;
     esac
 else
