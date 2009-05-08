@@ -129,6 +129,7 @@ MPC8260		ppc_6xx
 MPC8270		ppc_6xx
 MPC8280		ppc_6xx
 MPC8349		ppc_6xx
+MPC8360		ppc_6xx
 MPC8540		ppc_85xx
 MPC8541		ppc_85xx
 MPC8544		ppc_85xxDP
@@ -147,7 +148,7 @@ PPC750FX	ppc_7xx
 PPC750CX	ppc_7xx
 PPC750GL	ppc_7xx
 
-#IBM
+# IBM
 PPC970		ppc64-linux
 PPC970FX	ppc64-linux
 PPC970MP	ppc64-linux
