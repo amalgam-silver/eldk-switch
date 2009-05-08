@@ -170,6 +170,7 @@ S3C6400		armVFP-linux
 OMAP5912	arm-linux
 
 [eldkcc_to_arch]
+
 arm-linux	arm
 armVFP-linux	arm
 mips_4KC	mips
@@ -185,6 +186,7 @@ ppc_85xxDP	powerpc:ppc
 ppc_8xx		powerpc:ppc
 
 [alias_to_eldkcc]
+
 arm	arm-linux
 armVFP	armVFP-linux
 7xx	ppc_6xx
@@ -202,3 +204,23 @@ mpc85xx	ppc_85xx
 4xxFP	ppc_4xxFP
 mipsel	mips_4KCle
 mips	mips_4KC
+
+[board_to_uboot_config]
+
+
+[board_to_linux_config]
+
+# AMCC eval boards
+acadia	40x/acadia
+arches	44x/arches
+bamboo	44x/bamboo
+canyonlands	44x/canyonlands
+ebony	44x/ebony
+katmai	44x/katmai
+kilauea	40x/kilauea
+makalu	40x/makalu
+rainier	44x/rainier
+sequoia	44x/sequoia
+taishan	44x/taishan
+walnut	40x/walnut_config
+
