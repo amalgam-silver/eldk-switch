@@ -31,7 +31,7 @@ yucca_a		PPC440SPe
 # Freescale
 lite5200	MPC5200
 lite5200b	MPC5200
-ads5121		MPC5121e
+mpc5121ads	MPC5121e
 imx31		IMX31
 
 # PA-Semi
