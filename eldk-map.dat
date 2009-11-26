@@ -33,6 +33,8 @@ lite5200	MPC5200
 lite5200b	MPC5200
 mpc5121ads	MPC5121e
 imx31		IMX31
+p2020ds		P2020
+p2020rdb	P2020
 
 # PA-Semi
 electra		PA6T-1682M
@@ -157,6 +159,14 @@ MPC8544		ppc_85xxDP
 MPC8548		ppc_85xxDP
 MPC8555		ppc_85xx
 MPC8560		ppc_85xx
+P1011		ppc_85xxDP
+P1013		ppc_85xxDP
+P1020		ppc_85xxDP
+P1022		ppc_85xxDP
+P2010		ppc_85xxDP
+P2020		ppc_85xxDP
+P4040		ppc_85xxDP
+P4080		ppc_85xxDP
 
 # IBM with Motorola
 PPC740		ppc_7xx
@@ -229,6 +239,7 @@ mpc83xx		ppc_6xx
 85xx		ppc_85xx
 mpc85xx		ppc_85xx
 ppc_85xx	ppc_85xx
+qoriq		ppc_85xxDP
 85xxDP		ppc_85xxDP
 ppc_85xxDP	ppc_85xxDP
 4xx		ppc_4xx
