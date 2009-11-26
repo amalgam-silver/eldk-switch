@@ -142,6 +142,13 @@ MPC8247		ppc_6xx
 MPC8260		ppc_6xx
 MPC8270		ppc_6xx
 MPC8280		ppc_6xx
+MPC8313		ppc_6xx
+MPC8314		ppc_6xx
+MPC8315		ppc_6xx
+MPC8321		ppc_8xx
+MPC8323		ppc_8xx
+MPC8343		ppc_6xx
+MPC8347		ppc_6xx
 MPC8349		ppc_6xx
 MPC8360		ppc_6xx
 MPC8540		ppc_85xx
