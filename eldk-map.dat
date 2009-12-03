@@ -29,10 +29,11 @@ yucca		PPC440SPe
 yucca_a		PPC440SPe
 
 # Freescale
+babbage		IMX51
 lite5200	MPC5200
 lite5200b	MPC5200
 mpc5121ads	MPC5121e
-imx31		IMX31
+mx31ads		IMX31
 p2020ds		P2020
 p2020rdb	P2020
 
@@ -41,6 +42,7 @@ electra		PA6T-1682M
 
 # Samsung
 smdk6400	S3C6400
+smdk6410	S3C6410
 
 # Texas Instruments
 beagle		OMAP3
@@ -66,6 +68,12 @@ unc90		AT91RM9200
 # Infineon
 incaip		INCAIP
 
+# Karo
+tx25		IMX25
+tx27		IMX27
+tx31		IMX31
+tx51		IMX51
+
 # Micronas
 vcth		VCTH
 
@@ -81,6 +89,7 @@ imx31_phycore	IMX31
 
 # Samsung
 smdk6400	S3C6400
+smdk6410	S3C6410
 
 # TQ-Systems
 tqm8xxl		MPC823
@@ -121,7 +130,11 @@ PPC460SX	ppc_4xx
 AT91RM9200	arm-linux
 
 # Freescale
+IMX25		arm-linux
+IMX27		arm-linux
 IMX31		armVFP-linux
+IMX35		armVFP-linux
+IMX51		armVFP-linux
 MPC823		ppc_8xx
 MPC852		ppc_8xx
 MPC860		ppc_8xx
@@ -200,6 +213,7 @@ PA6T-1682M	ppc64-linux
 S3C2410		arm-linux
 S3C2440		arm-linux
 S3C6400		armVFP-linux
+S3C6410		armVFP-linux
 
 # TI
 OMAP5912	arm-linux
