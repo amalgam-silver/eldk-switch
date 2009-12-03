@@ -1,0 +1,25 @@
+# bash completion for DENX VL remote_power
+#
+# A copyright for those few lines is likely overkill, but if something goes
+# wrong, blame dzu@denx.de
+
+_eldk_installs () {
+    for i in /opt/eldk-* ; do
+	echo $i | sed 's|/opt/eldk-||'
+    done
+}
+
+_eldkswitch() {
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+
+    if [ "$prev" = "-r" ]; then
+	COMPREPLY=( $( compgen -W "$(_eldk_installs)" -- "${COMP_WORDS[COMP_CWORD]}" ))
+	return 0
+    else
+	COMPREPLY=( $( compgen -W "$(eldk-map b)" -- "${COMP_WORDS[COMP_CWORD]}" ))
+	return 0
+    fi
+}
+
+complete -F _eldkswitch eldk-switch
