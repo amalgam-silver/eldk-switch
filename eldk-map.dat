@@ -33,6 +33,8 @@ babbage		IMX51
 lite5200	MPC5200
 lite5200b	MPC5200
 mpc5121ads	MPC5121e
+mpc8349emitxe	MPC8349
+mpc8641hpcn	MPC8641
 mx31ads		IMX31
 p2020ds		P2020
 p2020rdb	P2020
@@ -172,6 +174,7 @@ MPC8544		ppc_85xxDP
 MPC8548		ppc_85xxDP
 MPC8555		ppc_85xx
 MPC8560		ppc_85xx
+MPC8641		ppc_74xx
 P1011		ppc_85xxDP
 P1013		ppc_85xxDP
 P1020		ppc_85xxDP
