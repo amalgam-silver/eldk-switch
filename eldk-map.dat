@@ -125,7 +125,8 @@ PPC440GX	ppc_4xx
 PPC440SP	ppc_4xx
 PPC440SPe	ppc_4xx
 PPC460EX	ppc_4xxFP
-PPC460GT	ppc_4xx
+PPC460GT	ppc_4xxFP
+PPC460GTx	ppc_4xx
 PPC460SX	ppc_4xx
 
 # Atmel
