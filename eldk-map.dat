@@ -48,6 +48,7 @@ smdk6410	S3C6410
 
 # Texas Instruments
 beagle		OMAP3
+omapl137	OMAPL137
 omap5912	OMAP5912
 
 
@@ -75,6 +76,9 @@ tx25		IMX25
 tx27		IMX27
 tx31		IMX31
 tx51		IMX51
+
+# LogicPD
+tmdxl138	OMAPL138
 
 # Micronas
 vcth		VCTH
@@ -220,6 +224,8 @@ S3C6400		armVFP-linux
 S3C6410		armVFP-linux
 
 # TI
+OMAPL137	arm-linux
+OMAPL138	arm-linux
 OMAP5912	arm-linux
 OMAP3		armVFP-linux
 
