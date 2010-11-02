@@ -33,6 +33,7 @@ babbage		IMX51
 lite5200	MPC5200
 lite5200b	MPC5200
 mpc5121ads	MPC5121e
+mpc8308rdb	MPC8308
 mpc8349emitxe	MPC8349
 mpc8641hpcn	MPC8641
 mx31ads		IMX31
@@ -164,6 +165,7 @@ MPC8247		ppc_6xx
 MPC8260		ppc_6xx
 MPC8270		ppc_6xx
 MPC8280		ppc_6xx
+MPC8308		ppc_6xx
 MPC8313		ppc_6xx
 MPC8314		ppc_6xx
 MPC8315		ppc_6xx
