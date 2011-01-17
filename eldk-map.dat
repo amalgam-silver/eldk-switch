@@ -98,6 +98,9 @@ imx31_phycore	IMX31
 smdk6400	S3C6400
 smdk6410	S3C6410
 
+# Technexion
+tam3517		AM3517
+
 # TQ-Systems
 tqm8xxl		MPC823
 tqm860		MPC860
@@ -226,6 +229,7 @@ S3C6400		armVFP-linux
 S3C6410		armVFP-linux
 
 # TI
+AM3517		armVFP-linux
 OMAPL137	arm-linux
 OMAPL138	arm-linux
 OMAP5912	arm-linux
