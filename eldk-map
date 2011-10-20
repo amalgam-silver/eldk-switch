@@ -20,7 +20,7 @@
 # data files are considerd in order: ~/.eldk-map.dat, eldk-map.dat and
 # eldk-map-local.dat.  The latter two are to be found in $DATADIR.
 #
-# (C) 2007-2008 by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
+# (C) 2007-2011 by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
 
 DATADIR=/usr/local/share/eldk
 DATAFILES="$HOME/.eldk-map.dat ${DATADIR}/eldk-map.dat ${DATADIR}/eldk-map-local.dat"
@@ -33,7 +33,7 @@ usage () {
     echo "	Lists all possible values for <column> where"			1>&2
     echo "	<column> is a fieldname."					1>&2
     echo "	Valid field names: 'board', 'cpu', 'eldkcc', 'arch', 'alias'"	1>&2
-    echo "                         'uboot_config', 'linux_config'"		1>&2
+    echo "                         'target', 'uboot_config', 'linux_config'"	1>&2
     echo "	(can be abbreviated by shortest unique substring)"		1>&2
     echo ""									1>&2
     echo "	Examples:"							1>&2
@@ -63,6 +63,7 @@ canon_field () {
     [ "${f:0:2}" = "al" ] && { echo "l" ; return; }
     [ "${f:0:1}" = "u" ] && { echo "U" ; return; }
     [ "${f:0:1}" = "l" ] && { echo "L" ; return; }
+    [ "${f:0:1}" = "t" ] && { echo "t" ; return; }
     [ "${f:0:1}" = "v" ] && { echo "v" ; return; }
     echo "$0: unknown column $1" 1>&2
     exit 1
@@ -75,6 +76,7 @@ uncanon_field () {
     [ "$f" = "e" ] && { echo "eldkcc" ; return; }
     [ "$f" = "a" ] && { echo "arch" ; return; }
     [ "$f" = "l" ] && { echo "alias" ; return; }
+    [ "$f" = "t" ] && { echo "target" ; return; }
     [ "$f" = "U" ] && { echo "uboot_config" ; return; }
     [ "$f" = "L" ] && { echo "linux_config" ; return; }
     echo "$0: unknown column $1" 1>&2
@@ -128,8 +130,9 @@ then
 	c)	get_section cpu_to_eldkcc | get_col 1 | sort | uniq ;;
 	e)      get_section eldkcc_to_arch | get_col 1 | sort | uniq ;;
 	l)	get_section alias_to_eldkcc | get_col 1 | sort | uniq ;;
-	U)	get_section board_to_uboot_config | get_col 1 | sort | uniq ;;
 	L)	get_section board_to_linux_config | get_col 1 | sort | uniq ;;
+	t)      get_section cpu_to_target | get_col 2 | sort | uniq ;;
+	U)	get_section board_to_uboot_config | get_col 1 | sort | uniq ;;
 	v)	echo "Verifying board -> cpu -> eldk_cc chains" 1>&2
 		for file in $DATAFILES; do
 		    for cpu in $(get_section_file board_to_cpu $file | get_col 2) ; do
@@ -174,11 +177,13 @@ then
 	b,L)	default_to $(get_section board_to_linux_config | match_first_col $key | head -1 2>/dev/null) $3 ;;
 	c,e)	get_section cpu_to_eldkcc | match_first_col $key | head -1 ;;
 	c,b)	get_section board_to_cpu | match_second_col $key ;;
+	c,t)	get_section cpu_to_target | match_first_col $key | head -1 ;;
 	e,a)	get_section eldkcc_to_arch | match_first_col $key | head -1 ;;
 	e,b)	for cpu in $(get_section cpu_to_eldkcc | match_second_col $key) ; do
 		    get_section board_to_cpu | match_second_col $(toupper $cpu)
 		done ;;
 	e,c)	get_section cpu_to_eldkcc | match_second_col $key ;;
+	t,a)	get_section target_to_arch | match_first_col $key | head -1 ;;
 	*)	echo "unknown lookup operation $(uncanon_field $from) -> $(uncanon_field $to)" 1>&2
 		exit 1 ;;
     esac

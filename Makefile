@@ -1,6 +1,6 @@
 # Makefile for eldk-switch
 #
-# (C) 2007-2008 by Detlev Zundel <dzu@denx.de>, DENX Software Engineering GmbH
+# (C) 2007-2011 by Detlev Zundel <dzu@denx.de>, DENX Software Engineering GmbH
 #
 
 PREFIX  = /usr/local
