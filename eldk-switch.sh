@@ -12,9 +12,10 @@ rev=4.2
 root_symlink=~/target-root
 
 usage () {
-    echo "usage: $(basename $0) [-v] [-r <release>] <board, cpu, eldkcc/target>"1>&2
+    echo "usage: $(basename $0) [-v] [-m] [-r <release>] <board, cpu, eldkcc/target>"1>&2
     echo "	Switches to using the ELDK <release> for"			1>&2
     echo "	<board>, <cpu> or <eldkcc>/<target>."				1>&2
+    echo "      -m will only affact a minimal amount of environment variables." 1>&2
     echo "       $(basename $0) -l"						1>&2
     echo "	Lists the installed ELDKs"					1>&2
     echo "       $(basename $0) -q"						1>&2
@@ -210,9 +211,11 @@ version_lte () {
 }
 
 # Parse options (bash extension)
-while getopts lqr:v option
+while getopts mlqr:v option
 do
     case $option in
+	m)      minimal=1
+		;;
 	l)      show_versions
 		exit 1
 		;;
@@ -345,11 +348,17 @@ else
 	cmds=$(cat ${config} | grep -v " PATH=" | sed 's/$/ ; /g')
 	# We want to reference ${TARGET_PREFIX}, so evaluate the settings
 	eval $cmds
-	cmds="$cmds export PATH=$PATH; export CROSS_COMPILE=${TARGET_PREFIX}"
+	# Built minimal set of variables, i.e. PATH, CROSS_COMPILE and ARCH
+	min_cmds="export PATH=$PATH ; export CROSS_COMPILE=${TARGET_PREFIX}"
 #	cmds="$cmds ; export DEPMOD=${eldk_prefix}${rev}/usr/bin/depmod.pl"
 	if need_target_arch_change $target
 	then
-	    cmds="$cmds ; export ARCH=$(eldk-map target arch $target | sed 's/:.*$//g')"
+	    min_cmds="$min_cmds ; export ARCH=$(eldk-map target arch $target | sed 's/:.*$//g')"
+	fi
+	if [ -n "${minimal}" ]; then
+	    cmds="$min_cmds"
+	else
+	    cmds="$min_cmds ; $cmds"
 	fi
 	echo $cmds
 	[ -n "$verbose" ] && echo $cmds | sed 's/ ; /\n/g' 1>&2
@@ -360,5 +369,4 @@ else
 	    echo "Adjusted $root_symlink pointing to $(readlink $root_symlink)" 1>&2
 	fi
     fi
-
 fi
