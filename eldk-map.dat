@@ -168,7 +168,9 @@ MPC8247		ppc_6xx
 MPC8260		ppc_6xx
 MPC8270		ppc_6xx
 MPC8280		ppc_6xx
+MPC8306		ppc_6xx
 MPC8308		ppc_6xx
+MPC8309		ppc_6xx
 MPC8313		ppc_6xx
 MPC8314		ppc_6xx
 MPC8315		ppc_6xx
@@ -305,7 +307,9 @@ MPC8247		powerpc
 MPC8260		powerpc
 MPC8270		powerpc
 MPC8280		powerpc
+MPC8306		powerpc
 MPC8308		powerpc
+MPC8309		powerpc
 MPC8313		powerpc
 MPC8314		powerpc
 MPC8315		powerpc
