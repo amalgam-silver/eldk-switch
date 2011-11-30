@@ -109,7 +109,7 @@ match_second_col () {
 
 # Get column
 get_col () {
-    sed 's/^\(.\+\)[\t]\+\(.\+\)$/\'"$1"'/'
+    sed 's/^\([^ \t]\+\)[\t]\+\(.\+\)$/\'"$1"'/'
 }
 
 default_to () {
@@ -131,7 +131,7 @@ then
 	e)      get_section eldkcc_to_arch | get_col 1 | sort | uniq ;;
 	l)	get_section alias_to_eldkcc | get_col 1 | sort | uniq ;;
 	L)	get_section board_to_linux_config | get_col 1 | sort | uniq ;;
-	t)      get_section cpu_to_target | get_col 2 | sort | uniq ;;
+	t)      get_section target_to_arch | get_col 1 | sort | uniq ;;
 	U)	get_section board_to_uboot_config | get_col 1 | sort | uniq ;;
 	v)	echo "Verifying board -> cpu -> eldk_cc chains" 1>&2
 		for file in $DATAFILES; do
