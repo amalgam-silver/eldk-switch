@@ -334,9 +334,11 @@ OMAP3		armv7a
 
 [target_to_arch]
 armv5te		arm
+armv6		arm
 armv7a		arm
 powerpc		powerpc
 powerpc-softfloat	powerpc
+mips		mips
 
 [board_to_uboot_config]
 
