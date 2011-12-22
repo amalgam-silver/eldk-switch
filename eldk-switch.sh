@@ -336,7 +336,7 @@ else
     else
 	prune_path ${eldk_prefix/%-}
 	config=$(ls ${eldk_prefix}${rev}/${target}/environment-setup-* 2>/dev/null)
-	if [ ! -r ${config} ]
+	if [ ! -r "${config}" ]
 	then
 	    echo "$(basename $0): ELDK $rev for $target is not installed!" 1>&2
 	    exit 1
