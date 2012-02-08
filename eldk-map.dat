@@ -1,6 +1,6 @@
 [board_to_cpu]
 
-# AMCC Eval boards
+# apm Eval boards
 acadia		PPC405EZ
 arches		PPC460GT
 bamboo		PPC440EP
@@ -117,7 +117,7 @@ tqm8560		MPC8560
 
 [cpu_to_eldkcc]
 
-# AMCC
+# apm
 PPC405EP	ppc_4xx
 PPC405EX	ppc_4xx
 PPC405EXr	ppc_4xx
@@ -285,8 +285,28 @@ mips		mips_4KC
 
 [cpu_to_target]
 
+# apm
+PPC405EP	powerpc-4xx-softfloat
+PPC405EX	powerpc-4xx-softfloat
+PPC405EXr	powerpc-4xx-softfloat
+PPC405EZ	powerpc-4xx-softfloat
+PPC405GP	powerpc-4xx-softfloat
+PPC405GPr	powerpc-4xx-softfloat
+PPC440EP	powerpc-4xx
+PPC440EPx	powerpc-4xx
+PPC440GP	powerpc-4xx-softfloat
+PPC440GR	powerpc-4xx-softfloat
+PPC440GRx	powerpc-4xx-softfloat
+PPC440GX	powerpc-4xx-softfloat
+PPC440SP	powerpc-4xx-softfloat
+PPC440SPe	powerpc-4xx-softfloat
+PPC460EX	powerpc-4xx
+PPC460GT	powerpc-4xx
+PPC460GTx	powerpc-4xx-softfloat
+PPC460SX	powerpc-4xx-softfloat
+
 # Atmel
-AT91RM9200	armv5te
+AT91RM9200	armv4t
 
 # Freescale
 IMX25		armv5te
@@ -333,11 +353,14 @@ OMAP5912	armv5te
 OMAP3		armv7a
 
 [target_to_arch]
+armv4t		arm
 armv5te		arm
 armv6		arm
 armv7a		arm
 powerpc		powerpc
 powerpc-softfloat	powerpc
+powerpc-4xx		powerpc
+powerpc-4xx-softfloat	powerpc
 mips		mips
 
 [board_to_uboot_config]
