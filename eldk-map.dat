@@ -37,8 +37,15 @@ mpc8308rdb	MPC8308
 mpc8349emitxe	MPC8349
 mpc8641hpcn	MPC8641
 mx31ads		IMX31
+mx35pdk		IMX35
 p2020ds		P2020
 p2020rdb	P2020
+imx53-ard	IMX53
+imx53-evk	IMX53
+imx53-loco	IMX53
+imx53-sabre	IMX53
+imx53-qsb	IMX53
+imx6q-sabre-lite	IMX6Q
 
 # PA-Semi
 electra		PA6T-1682M
@@ -51,6 +58,7 @@ smdk6410	S3C6410
 beagle		OMAP3
 omapl137	OMAPL137
 omap5912	OMAP5912
+panda		OMAP4
 
 
 # Board manufacturers
@@ -314,6 +322,15 @@ IMX27		armv5te
 IMX31		armv7a
 IMX35		armv7a
 IMX51		armv7a
+IMX53		armv7a
+IMX6S		armv7a
+IMX6SOLO	armv7a
+IMX6SOLOLITE	armv7a
+IMX6D		armv7a
+IMX6DUAL	armv7a
+IMX6DUALLITE	armv7a
+IMX6Q		armv7a
+IMX6QUAD	armv7a
 MPC823		powerpc-softfloat
 MPC852		powerpc-softfloat
 MPC860		powerpc-softfloat
@@ -351,6 +368,7 @@ OMAPL137	armv5te
 OMAPL138	armv5te
 OMAP5912	armv5te
 OMAP3		armv7a
+OMAP4		armv7a
 
 [target_to_arch]
 armv4t		arm
