@@ -184,6 +184,9 @@ then
 		done ;;
 	e,c)	get_section cpu_to_eldkcc | match_second_col $key ;;
 	t,a)	get_section target_to_arch | match_first_col $key | head -1 ;;
+	t,b)	for cpu in $(get_section cpu_to_target | match_second_col $key) ; do
+		    get_section board_to_cpu | match_second_col $(toupper $cpu)
+		done ;;
 	*)	echo "unknown lookup operation $(uncanon_field $from) -> $(uncanon_field $to)" 1>&2
 		exit 1 ;;
     esac
