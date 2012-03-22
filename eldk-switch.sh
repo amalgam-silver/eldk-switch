@@ -8,7 +8,7 @@
 #
 
 eldk_prefix=/opt/eldk-
-rev=4.2
+rev=5.1
 root_symlink=~/target-root
 
 usage () {
