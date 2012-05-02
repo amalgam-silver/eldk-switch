@@ -36,6 +36,7 @@ mpc5121ads	MPC5121e
 mpc8308rdb	MPC8308
 mpc8349emitxe	MPC8349
 mpc8641hpcn	MPC8641
+mx28evk		IMX28
 mx31ads		IMX31
 mx35pdk		IMX35
 p2020ds		P2020
@@ -73,6 +74,10 @@ ppchameleon	PPC405EP
 # Dave/Denx
 aria		MPC5121e
 qong		IMX31
+
+# Denx
+m28		IMX28
+m28evk		IMX28
 
 # Digi
 unc90		AT91RM9200
@@ -151,6 +156,7 @@ AT91RM9200	arm-linux
 # Freescale
 IMX25		arm-linux
 IMX27		arm-linux
+IMX28		arm-linux
 IMX31		armVFP-linux
 IMX35		armVFP-linux
 IMX51		armVFP-linux
@@ -319,6 +325,7 @@ AT91RM9200	armv4t
 # Freescale
 IMX25		armv5te
 IMX27		armv5te
+IMX28		armv5te
 IMX31		armv7a
 IMX35		armv7a
 IMX51		armv7a
