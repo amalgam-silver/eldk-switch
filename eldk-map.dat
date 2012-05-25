@@ -202,13 +202,24 @@ MPC8555		ppc_85xx
 MPC8560		ppc_85xx
 MPC8641		ppc_74xx
 P1011		ppc_85xxDP
+P1012		ppc_85xxDP
 P1013		ppc_85xxDP
+P1014		ppc_85xxDP
+P1015		ppc_85xxDP
+P1016		ppc_85xxDP
+P1017		ppc_85xxDP
 P1020		ppc_85xxDP
+P1021		ppc_85xxDP
 P1022		ppc_85xxDP
+P1023		ppc_85xxDP
+P1024		ppc_85xxDP
+P1025		ppc_85xxDP
 P2010		ppc_85xxDP
 P2020		ppc_85xxDP
-P4040		ppc_85xxDP
-P4080		ppc_85xxDP
+P2040		ppc_6xx
+P2041		ppc_6xx
+P4040		ppc_6xx
+P4080		ppc_6xx
 
 # IBM with Motorola
 PPC740		ppc_7xx
@@ -363,6 +374,25 @@ MPC8343		powerpc
 MPC8347		powerpc
 MPC8349		powerpc
 MPC8360		powerpc
+P1011		powerpc-e500v2
+P1012		powerpc-e500v2
+P1013		powerpc-e500v2
+P1014		powerpc-e500v2
+P1015		powerpc-e500v2
+P1016		powerpc-e500v2
+P1017		powerpc-e500v2
+P1020		powerpc-e500v2
+P1021		powerpc-e500v2
+P1022		powerpc-e500v2
+P1023		powerpc-e500v2
+P1024		powerpc-e500v2
+P1025		powerpc-e500v2
+P2010		powerpc-e500v2
+P2020		powerpc-e500v2
+P2040		powerpc
+P2041		powerpc
+P4040		powerpc
+P4080		powerpc
 
 # Samsung
 S3C2410		armv5te
@@ -386,6 +416,7 @@ powerpc		powerpc
 powerpc-softfloat	powerpc
 powerpc-4xx		powerpc
 powerpc-4xx-softfloat	powerpc
+powerpc-e500v2		powerpc
 mips		mips
 
 [board_to_uboot_config]
