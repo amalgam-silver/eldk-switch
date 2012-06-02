@@ -39,14 +39,19 @@ mpc8641hpcn	MPC8641
 mx28evk		IMX28
 mx31ads		IMX31
 mx35pdk		IMX35
+p1010rdb	P1010
+p1020rdb	P1020
+p1022ds		P1022
 p2020ds		P2020
 p2020rdb	P2020
+p2041rdb	P2041
 imx53-ard	IMX53
 imx53-evk	IMX53
 imx53-loco	IMX53
 imx53-sabre	IMX53
 imx53-qsb	IMX53
 imx6q-sabre-lite	IMX6Q
+twr-p1025	P1025
 
 # PA-Semi
 electra		PA6T-1682M
