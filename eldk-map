@@ -133,19 +133,35 @@ then
 	L)	get_section board_to_linux_config | get_col 1 | sort | uniq ;;
 	t)      get_section target_to_arch | get_col 1 | sort | uniq ;;
 	U)	get_section board_to_uboot_config | get_col 1 | sort | uniq ;;
-	v)	echo "Verifying board -> cpu -> eldk_cc chains" 1>&2
+	v)	echo "Verifying board -> cpu -> eldk_cc chains (pre ELDK 5.0)" 1>&2
 		for file in $DATAFILES; do
 		    for cpu in $(get_section_file board_to_cpu $file | get_col 2) ; do
 			if [ -z "$(get_section cpu_to_eldkcc | match_first_col $(toupper $cpu))" ] ; then
-			    echo "$file: unknown CPU $cpu" 1>&2
+			    echo "$file: unknown ELDKCC for CPU $cpu" 1>&2
 			fi
 		    done
 		done
-		echo "Verifying cpu -> eldk_cc -> arch chains" 1>&2
+		echo "Verifying cpu -> eldk_cc -> arch chains (pre ELDK 5.0)" 1>&2
 		for file in $DATAFILES; do
 		    for eldkcc in $(get_section_file cpu_to_eldkcc $file | get_col 2) ; do
 			if [ -z "$(get_section eldkcc_to_arch | match_first_col $(toupper $eldkcc))" ] ; then
-			    echo "$file: $eldkcc doesn't map to an arch value" 1>&2
+			    echo "$file: $eldkcc doesn't map to an ARCH value" 1>&2
+			fi
+		    done
+		done
+		echo "Verifying board -> cpu -> target chains (post ELDK 5.0)" 1>&2
+		for file in $DATAFILES; do
+		    for cpu in $(get_section_file board_to_cpu $file | get_col 2) ; do
+			if [ -z "$(get_section cpu_to_target | match_first_col $(toupper $cpu))" ] ; then
+			    echo "$file: unknown TARGET for CPU $cpu" 1>&2
+			fi
+		    done
+		done
+		echo "Verifying cpu -> target -> arch chains (post ELDK 5.0)" 1>&2
+		for file in $DATAFILES; do
+		    for target in $(get_section_file cpu_to_target $file | get_col 2) ; do
+			if [ -z "$(get_section target_to_arch | match_first_col $(toupper $target))" ] ; then
+			    echo "$file: $target doesn't map to an ARCH value" 1>&2
 			fi
 		    done
 		done ;;

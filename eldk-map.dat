@@ -165,6 +165,8 @@ IMX28		arm-linux
 IMX31		armVFP-linux
 IMX35		armVFP-linux
 IMX51		armVFP-linux
+IMX53		armVFP-linux
+IMX6Q		armVFP-linux
 MPC823		ppc_8xx
 MPC852		ppc_8xx
 MPC860		ppc_8xx
@@ -206,6 +208,7 @@ MPC8548		ppc_85xxDP
 MPC8555		ppc_85xx
 MPC8560		ppc_85xx
 MPC8641		ppc_74xx
+P1010		ppc_85xxDP
 P1011		ppc_85xxDP
 P1012		ppc_85xxDP
 P1013		ppc_85xxDP
@@ -267,6 +270,7 @@ OMAPL137	arm-linux
 OMAPL138	arm-linux
 OMAP5912	arm-linux
 OMAP3		armVFP-linux
+OMAP4		armVFP-linux
 
 [eldkcc_to_arch]
 
@@ -379,6 +383,7 @@ MPC8343		powerpc
 MPC8347		powerpc
 MPC8349		powerpc
 MPC8360		powerpc
+P1010		powerpc-e500v2
 P1011		powerpc-e500v2
 P1012		powerpc-e500v2
 P1013		powerpc-e500v2
@@ -399,9 +404,17 @@ P2041		powerpc
 P4040		powerpc
 P4080		powerpc
 
+# IDT
+IDTRC32434	mips
+
+# Infineon
+INCAIP		mips
+
 # Samsung
 S3C2410		armv5te
 S3C2440		armv5te
+S3C6400		armv6
+S3C6410		armv6
 
 # TI
 DM368		armv5te
