@@ -4,11 +4,11 @@
 # e.g. put "eldk-switch() { eval `eldk-switch.sh $*`; }"
 # in your .bashrc
 #
-# (C) 2007-2011 by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
+# (C) 2007-2012 by Detlev Zundel, <dzu@denx.de> DENX Software Engineering GmbH
 #
 
 eldk_prefix=/opt/eldk-
-rev=5.1
+rev=5.2
 root_symlink=~/target-root
 
 usage () {
