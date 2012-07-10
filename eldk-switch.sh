@@ -174,7 +174,8 @@ show_versions () {
 
 # Show currently used ELDK
 query_version () {
-    dir=$(echo $PATH | tr : "\n" | grep ${eldk_prefix/%-} | head -1 | sed 's/\/bin//; s/\/usr\/bin//')
+    dir=$(echo $PATH | tr : "\n" | grep ${eldk_prefix/%-} | \
+	head -1 | sed 's/\/bin//; s/\/usr\/bin//; s/\/sysroots.*$//';)
     ver=$(eldk_version $dir)
     if [ -n "$dir" ]; then
 	echo "Currently using eldk ${ver} from ${dir}"	1>&2
