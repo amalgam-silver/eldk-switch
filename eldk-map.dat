@@ -367,6 +367,15 @@ MPC5121		powerpc
 MPC5121e	powerpc
 MPC5123		powerpc
 MPC5125		powerpc
+MPC7400		powerpc-74xx
+MPC7410		powerpc-74xx
+MPC7445		powerpc-74xx
+MPC7447		powerpc-74xx
+MPC7447A	powerpc-74xx
+MPC7448		powerpc-74xx
+MPC7450		powerpc-74xx
+MPC7455		powerpc-74xx
+MPC7457		powerpc-74xx
 MPC8247		powerpc
 MPC8260		powerpc
 MPC8270		powerpc
@@ -383,6 +392,13 @@ MPC8343		powerpc
 MPC8347		powerpc
 MPC8349		powerpc
 MPC8360		powerpc
+MPC8540		powerpc-e500
+MPC8541		powerpc-e500
+MPC8544		powerpc-e500v2
+MPC8548		powerpc-e500v2
+MPC8555		powerpc-e500
+MPC8560		powerpc-e500
+MPC8641		powerpc-74xx
 P1010		powerpc-e500v2
 P1011		powerpc-e500v2
 P1012		powerpc-e500v2
@@ -404,11 +420,29 @@ P2041		powerpc
 P4040		powerpc
 P4080		powerpc
 
+# IBM with Motorola
+PPC740		powerpc-7xx
+PPC750		powerpc-7xx
+PPC755		powerpc-7xx
+PPC750CX	powerpc-7xx
+PPC750CXe	powerpc-7xx
+PPC750FX	powerpc-7xx
+PPC750CX	powerpc-7xx
+PPC750GL	powerpc-7xx
+
+# IBM
+PPC970		powerpc64
+PPC970FX	powerpc64
+PPC970MP	powerpc64
+
 # IDT
 IDTRC32434	mips
 
 # Infineon
 INCAIP		mips
+
+# PA-Semi
+PA6T-1682M	powerpc64
 
 # Samsung
 S3C2410		armv5te
@@ -434,7 +468,11 @@ powerpc		powerpc
 powerpc-softfloat	powerpc
 powerpc-4xx		powerpc
 powerpc-4xx-softfloat	powerpc
+powerpc-e500		powerpc
 powerpc-e500v2		powerpc
+powerpc-7xx		powerpc
+powerpc-74xx		powerpc
+powerpc64		powerpc
 mips		mips
 
 [board_to_uboot_config]
