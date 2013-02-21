@@ -164,7 +164,16 @@ then
 			    echo "$file: $target doesn't map to an ARCH value" 1>&2
 			fi
 		    done
-		done ;;
+		done
+		echo "Verifying post ELDK 5.0 cpu table has at least the same entries than the pre ELDK 5.0 table" 1>&2
+		for file in $DATAFILES; do
+		    for cpu in $(get_section_file cpu_to_eldkcc $file | get_col 1) ; do
+			if [ -z "$(get_section cpu_to_target | match_first_col $(toupper $cpu))" ] ; then
+			    echo "$file: $cpu doesn't have an entry in cpu_to_target" 1>&2
+			fi
+		    done
+		done
+		;;
     esac
 elif [ $# -eq 3 ]
 then
