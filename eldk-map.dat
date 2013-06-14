@@ -75,7 +75,7 @@ amigaone-xe-g4	MPC7455
 
 # Dave
 ppchameleon	PPC405EP
- 
+
 # Dave/Denx
 aria		MPC5121e
 qong		IMX31
@@ -465,6 +465,7 @@ armv4t		arm
 armv5te		arm
 armv6		arm
 armv7a		arm
+armv7a-hf	arm
 powerpc		powerpc
 powerpc-softfloat	powerpc
 powerpc-4xx		powerpc
