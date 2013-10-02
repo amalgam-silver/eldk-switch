@@ -347,8 +347,8 @@ else
 	pathcmd=$(cat ${config} | grep " PATH=")
 	eval $pathcmd
 	cmds=$(cat ${config} | grep -v " PATH=" | sed 's/$/ ; /g')
-	# We want to reference ${TARGET_PREFIX}, so evaluate the settings
-	eval $cmds
+	# We want to reference ${TARGET_PREFIX}, so evaluate it
+	eval $(cat ${config} | grep "TARGET_PREFIX=")
 	# Built minimal set of variables, i.e. PATH, CROSS_COMPILE and ARCH
 	min_cmds="export PATH=$PATH ; export CROSS_COMPILE=${TARGET_PREFIX}"
 #	cmds="$cmds ; export DEPMOD=${eldk_prefix}${rev}/usr/bin/depmod.pl"
